@@ -54,6 +54,11 @@ namespace RepublicaEmpleos
                 // Or use this for SQL Server (if running on Windows):
                 // options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection"))
             });
+            
+            services.AddDbContext<ApplicationDbContextDeployd>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Deployd"));
+            });
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
