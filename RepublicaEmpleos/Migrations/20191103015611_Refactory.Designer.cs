@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepublicaEmpleos.Data;
 
 namespace RepublicaEmpleos.Migrations
 {
     [DbContext(typeof(ApplicationDbContextDeployd))]
-    partial class ApplicationDbContextDeploydModelSnapshot : ModelSnapshot
+    [Migration("20191103015611_Refactory")]
+    partial class Refactory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
