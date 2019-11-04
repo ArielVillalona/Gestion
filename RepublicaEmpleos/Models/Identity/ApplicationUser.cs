@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace RepublicaEmpleos.Models.Identity
@@ -12,6 +13,7 @@ namespace RepublicaEmpleos.Models.Identity
         public string JobDescription { get; set; }
 
         [PersonalData]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? BirthDate { get; set; }
     }
 }

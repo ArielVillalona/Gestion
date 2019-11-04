@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RepublicaEmpleos.Models.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace RepublicaEmpleos.Models
 {
@@ -12,5 +13,7 @@ namespace RepublicaEmpleos.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        public ApplicationUser account { get; set; }
     }
 }

@@ -10,12 +10,16 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using RepublicaEmpleos.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace RepublicaEmpleos.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class HomeController : BaseController
     {
+        private readonly ApplicationDbContextDeployd _db;
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -24,10 +28,12 @@ namespace RepublicaEmpleos.Controllers
         public string StatusMessage { get; set; }
 
         public HomeController(
+            ApplicationDbContextDeployd db,
             ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
+            _db = db;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -65,6 +71,71 @@ namespace RepublicaEmpleos.Controllers
             {
                 Email = user.Email,
                 FullName = user.FullName
+            });
+        }
+
+        [HttpGet("/FullProfile")]
+        public async Task<IActionResult> FullProfile()
+        {
+            var genero = new List<SelectListItem> { 
+                new SelectListItem() {Text = "Masculino", Value = "1", Selected=true},
+                new SelectListItem() {Text = "Femenino", Value = "2"},
+                new SelectListItem() {Text = "No Binario", Value = "3"}
+            };
+            var Nacionalidad = new List<SelectListItem> {
+                new SelectListItem() {Text = "Dominicano", Value = "1", Selected=true},
+            };
+            var EstadoCivil = new List<SelectListItem> {
+                new SelectListItem() {Text = "Soltero", Value = "1", Selected=true},
+                new SelectListItem() {Text = "Casado", Value = "2"},
+                new SelectListItem() {Text = "union libre", Value = "3"}
+            };
+            var NivelEducativo = new List<SelectListItem> {
+                new SelectListItem() {Text = "Estudiante", Value = "1", Selected=true},
+                new SelectListItem() {Text = "Universitario", Value = "2"},
+                new SelectListItem() {Text = "Bachiller", Value = "3"}
+            };
+            var Licencia = new List<SelectListItem> {
+                new SelectListItem() {Text = "No", Value = "1", Selected=true},
+                new SelectListItem() {Text = "Si", Value = "2"},
+            };
+            var Vehiculo = new List<SelectListItem> {
+                new SelectListItem() {Text = "No", Value = "1", Selected=true},
+                new SelectListItem() {Text = "Si", Value = "2"},
+            };
+            var CabezaHogar = new List<SelectListItem> {
+                new SelectListItem() {Text = "No", Value = "1", Selected=true},
+                new SelectListItem() {Text = "Si", Value = "2"},
+            };
+            var Estatura = new List<SelectListItem> {
+                new SelectListItem() {Text = "5' 7\"", Value = "1", Selected=true},
+                new SelectListItem() {Text = "5' 8\"", Value = "2"},
+                new SelectListItem() {Text = "5' 9\"", Value = "3"}
+            };
+            
+            ViewData["Genero"] = genero;
+            ViewData["Nacionalidad"] = Nacionalidad;
+            ViewData["EstadoCivil"] = EstadoCivil;
+            ViewData["NivelEducativo"] = NivelEducativo;
+            ViewData["Licencia"] = Licencia;
+            ViewData["Vehiculo"] = Vehiculo;
+            ViewData["CabezaHogar"] = CabezaHogar;
+            ViewData["Estatura"] = Estatura;
+
+            var Profile = await _userManager.GetUserAsync(User);
+            if (Profile == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            return View(new ProfileViewModel
+            {
+                Email=Profile.Email, 
+                FullName = Profile.FullName,
+                account = new ApplicationUser { 
+                    BirthDate=Profile.BirthDate,
+                    PhoneNumber=Profile.PhoneNumber,
+                    JobDescription = Profile.JobDescription
+                }
             });
         }
 

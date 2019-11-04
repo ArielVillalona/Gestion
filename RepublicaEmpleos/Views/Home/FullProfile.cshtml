@@ -1,0 +1,216 @@
+﻿@model ProfileViewModel
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Full Profile";
+}
+<div class="row">
+    @*<div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+
+        </div>*@
+    <div class="col-xl-12 order-xl-1">
+        <div class="card card-profile shadow ct-example">
+            <!--Header de la carta-->
+            <div class="card-header bg-white border-0">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h3 class="mb-0">Informacion Basica</h3>
+                    </div>
+                    <div class="col-4 text-right">
+                        <a href="#!" class="btn btn-sm btn-primary">Modificar</a>
+                        <a href="#" class="btn btn-sm btn-info mr-4">Contactar</a>
+                        <a href="#" class="btn btn-sm btn-default float-right">Dejar un Mensaje</a>
+                    </div>
+                </div>
+            </div>
+            <!--END Header de la carta-->
+            <!--Foto de perfil-->
+            <div class="row justify-content-center">
+                <div class="col-lg-3 order-lg-2">
+                    <div class="card-profile-image">
+                        <a href="#">
+                            <img src="~/img/theme/camarero.png" class="rounded-circle">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--END foto de perfil-->
+            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                <div class="d-flex justify-content-between">
+                </div>
+            </div>
+            <div class="card-body pt-0 pt-md-4">
+                <form method="post" asp-action="FullProfile" asp-controller="Home">
+                    <textarea class="form-control" id="" rows="3" placeholder="Descripcion Brebe de metas y objetivos"></textarea>
+                    <hr class="my-4" />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha de Nacimiento</label>
+                                <div class="input-group input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                    </div>
+                                    <input asp-for="account.BirthDate"
+                                           class="form-control datepicker" placeholder="Select date" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Genero</label>
+                                <select class="form-control" asp-items="ViewBag.Genero">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Nacionalidad</label>
+                                <select class="form-control" asp-items="ViewBag.Nacionalidad">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Estado Civil</label>
+                                <select class="form-control" asp-items="ViewBag.EstadoCivil">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Maximo Nivel Educativo</label>
+                                <select class="form-control" asp-items="ViewBag.NivelEducativo">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Telefono</label>
+                                <input asp-for="account.PhoneNumber"
+                                       type="tel" placeholder="Telefono" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4" />
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Licencia de Conducir</label>
+                                <select class="form-control" asp-items="ViewBag.Licencia">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Posee Vehiculo</label>
+                                <select class="form-control" asp-items="ViewBag.Vehiculo">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Jefe de hogar?</label>
+                                <select class="form-control" asp-items="ViewBag.CabezaHogar">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Estatura</label>
+                                <select class="form-control" asp-items="ViewBag.Estatura">
+                                    <option value="">Seleccione</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h3 class="mb-0">Perfil</h3>
+                    </div>
+                    <div class="col-4 text-right">
+                        <a href="#!" class="btn btn-sm btn-primary">Modificar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Home" asp-action="Profile" method="POST">
+                    <h6 class="heading-small text-muted mb-4">Informacion</h6>
+                    <div class="pl-lg-4">
+                        @if (!string.IsNullOrWhiteSpace(TempData["StatusMessage"] as string))
+                        {
+
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                @TempData["StatusMessage"]
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                        }
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
+                        {
+                            @foreach (var error in @ViewData.ModelState[string.Empty]?.Errors)
+                            {
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <span>@error.ErrorMessage</span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            }
+                        }
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-name">Nombre</label>
+                                    <input asp-for="FullName" type="text" id="input-name" class="form-control form-control-alternative" placeholder="Name" />
+                                    <span asp-validation-for="FullName" class="invalid-feedback" style="display: block"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-email">Correo Electronico</label>
+                                    <input asp-for="Email" type="text" id="input-name" class="form-control form-control-alternative" placeholder="jesse@example.com" />
+                                    <span asp-validation-for="Email" class="invalid-feedback" style="display: block"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-email">Situacion Laboral</label>
+                                    <input asp-for="account.JobDescription"
+                                           type="text" placeholder="Descripcion del puesto" class="form-control" />
+                                    <span asp-validation-for="Email" class="invalid-feedback" style="display: block"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <button class="btn btn-success mt-4 mb-4" type="submit">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
