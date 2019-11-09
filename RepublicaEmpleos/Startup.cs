@@ -204,6 +204,13 @@ namespace RepublicaEmpleos
                     name: "default",
                     template: "{controller=home}/{action=index}/{id?}");
             });
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "Admin",
+                  template: "{area:exists}/{controller=Test}/{action=Index}/{id?}"
+                );
+            });
         }
     }
 }

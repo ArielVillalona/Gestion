@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using RepublicaEmpleos.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System;
+using System.IO;
 
 namespace RepublicaEmpleos.Controllers
 {
@@ -77,7 +79,7 @@ namespace RepublicaEmpleos.Controllers
         [HttpGet("/FullProfile")]
         public async Task<IActionResult> FullProfile()
         {
-            var genero = new List<SelectListItem> { 
+            var genero = new List<SelectListItem> {
                 new SelectListItem() {Text = "Masculino", Value = "1", Selected=true},
                 new SelectListItem() {Text = "Femenino", Value = "2"},
                 new SelectListItem() {Text = "No Binario", Value = "3"}
@@ -112,7 +114,7 @@ namespace RepublicaEmpleos.Controllers
                 new SelectListItem() {Text = "5' 8\"", Value = "2"},
                 new SelectListItem() {Text = "5' 9\"", Value = "3"}
             };
-            
+
             ViewData["Genero"] = genero;
             ViewData["Nacionalidad"] = Nacionalidad;
             ViewData["EstadoCivil"] = EstadoCivil;
@@ -129,11 +131,12 @@ namespace RepublicaEmpleos.Controllers
             }
             return View(new ProfileViewModel
             {
-                Email=Profile.Email, 
+                Email = Profile.Email,
                 FullName = Profile.FullName,
-                account = new ApplicationUser { 
-                    BirthDate=Profile.BirthDate,
-                    PhoneNumber=Profile.PhoneNumber,
+                account = new ApplicationUser
+                {
+                    BirthDate = Profile.BirthDate,
+                    PhoneNumber = Profile.PhoneNumber,
                     JobDescription = Profile.JobDescription
                 }
             });
