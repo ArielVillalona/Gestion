@@ -207,7 +207,7 @@ namespace RepublicaEmpleos
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                  name: "Admin",
+                  name: "Admins",
                   template: "{area:exists}/{controller=Test}/{action=Index}/{id?}"
                 );
             });

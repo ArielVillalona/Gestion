@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RepublicaEmpleos.Areas.Admin.Controllers
 {
-    [Area("test")]
+    [Area("Admin")]
     public class TestController : Controller
     {
         public IActionResult Index()
