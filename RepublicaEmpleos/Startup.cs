@@ -63,7 +63,8 @@ namespace RepublicaEmpleos
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContextDeployd>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+                //.AddEntityFrameworkStores<ApplicationDbContextDeployd>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
@@ -148,6 +149,7 @@ namespace RepublicaEmpleos
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/login");
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Logout", "/logout");
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/ForgotPassword", "/forgot-password");
+                options.Conventions.AddAreaPageRoute("Admin", "/Casa/index", "/index");
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddSessionStateTempDataProvider();
 
@@ -207,8 +209,8 @@ namespace RepublicaEmpleos
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                  name: "Admins",
-                  template: "{area:exists}/{controller=Test}/{action=Index}/{id?}"
+                  name: "Admin",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
             });
         }

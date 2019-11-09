@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Text.Encodings.Web;
 
 namespace RepublicaEmpleos.Areas.Identity.Pages.Account
 {
@@ -92,7 +93,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // Uncomment the code below to enable sending a confirmation e-mail
-                    /*
+                    
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -102,7 +103,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                    */
+                    
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
