@@ -198,8 +198,8 @@ namespace RepublicaEmpleos.Controllers
             return View();
         }
 
-        [HttpGet("/privacy")]
-        public IActionResult Privacy()
+        [HttpGet("/Puestos")]
+        public IActionResult Puestos()
         {
             return View();
         }
