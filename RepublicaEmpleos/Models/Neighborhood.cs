@@ -6,7 +6,6 @@ namespace RepublicaEmpleos
 {
     public class Neighborhood:DTO.Neighborhood
     {
-        public int SectorID { get; set; }
-        public Sector Sector { get; set; }
+        public virtual ICollection<Sector> Sector { get; set; }
     }
 }

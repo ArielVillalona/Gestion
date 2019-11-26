@@ -8,5 +8,6 @@ namespace RepublicaEmpleos.DTO
     {
         public int Id { get; set; }
         public string Matricula { get; set; }
+        public int? TypeId { get; set; }
     }
 }

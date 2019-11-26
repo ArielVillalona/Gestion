@@ -10,5 +10,6 @@ namespace RepublicaEmpleos.DTO
         public string Street { get; set; }
         public string Building { get; set; }
         public string references { get; set; }
+        public int? NeighborhoodID { get; set; }
     }
 }

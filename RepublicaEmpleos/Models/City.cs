@@ -6,7 +6,6 @@ namespace RepublicaEmpleos
 {
     public class City:DTO.City
     {
-        public int CountryId { get; set; }
-        public Country Country { get; set; }
+        public virtual ICollection<Country> Country { get; set; }
     }
 }
