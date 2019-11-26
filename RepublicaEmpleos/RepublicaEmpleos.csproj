@@ -19,4 +19,9 @@
     <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\RepublicaEmpleos.DTO\RepublicaEmpleos.DTO.csproj" />
+  </ItemGroup>
+
 </Project>
