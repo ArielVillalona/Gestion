@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RepublicaEmpleos.Services.Interfaces;
+using RepublicaEmpleos.Services;
 
 namespace RepublicaEmpleos
 {
@@ -67,6 +69,7 @@ namespace RepublicaEmpleos
                 //.AddEntityFrameworkStores<ApplicationDbContextDeployd>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+            services.AddScoped<IProfileServices,ProfileServices>();
 
             services.Configure<IdentityOptions>(options =>
             {

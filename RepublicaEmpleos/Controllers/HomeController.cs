@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using RepublicaEmpleos.Services.Interfaces;
 
 namespace RepublicaEmpleos.Controllers
 {
@@ -28,6 +29,7 @@ namespace RepublicaEmpleos.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IProfileServices _profileServices;
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -37,13 +39,15 @@ namespace RepublicaEmpleos.Controllers
             ApplicationDbContext dbContext,
             ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IProfileServices profileServices)
         {
             _db = db;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
+            _profileServices = profileServices;
         }
 
         [HttpGet("/")]
@@ -73,7 +77,6 @@ namespace RepublicaEmpleos.Controllers
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
             return View(new ProfileViewModel
             {
                 Email = user.Email,
@@ -113,8 +116,10 @@ namespace RepublicaEmpleos.Controllers
             ViewData["Vehiculo"] = Vehiculo;
             ViewData["CabezaHogar"] = CabezaHogar;
             ViewData["Estatura"] = Estatura;
+
             var profile = await _userManager.GetUserAsync(User);
-            var fullprofile = _dbContext.Profiles.Where(x => x.ApplicationUserId == profile.Id).FirstOrDefault();
+            var fullprofile = _profileServices.GetProfileById(profile.Id);
+
             if (profile == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -133,17 +138,14 @@ namespace RepublicaEmpleos.Controllers
 
             if (input.Profile.ApplicationUserId == user.Id)
             {
-                _dbContext.Profiles.Update(input.Profile);
-                await _dbContext.SaveChangesAsync();
-                StatusMessage = "Your profile has been updated";
+                await _profileServices.UpdateProfileAsync(input.Profile);
             }
             else
             {
                 input.Profile.ApplicationUserId = user.Id;
-                _dbContext.Profiles.Add(input.Profile);
-                await _dbContext.SaveChangesAsync();
-                StatusMessage = "Your profile has been updated";
+                await _profileServices.CreateProfileAsync(input.Profile);
             }
+            StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(FullProfile));
         }
 
