@@ -13,10 +13,10 @@ namespace RepublicaEmpleos.DTO
         public DateTime DateOfBirth { get; set; }
         public bool HeadHome { get; set; }
         public string ImagePath { get; set; }
-        public int? IdGender { get; set; }
-        public int? IdNationatily { get; set; }
-        public int? IdMatiralstatus { get; set; }
-        public int? IdEducatibleTitle { get; set; }
+        public int? GenderId { get; set; }
+        public int? NationalityId { get; set; }
+        public int? MatiralStatusId { get; set; }
+        public int? EducativeTitleId { get; set; }
 
     }
 }

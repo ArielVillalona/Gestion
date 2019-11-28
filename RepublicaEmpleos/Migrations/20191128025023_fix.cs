@@ -2,26 +2,78 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RepublicaEmpleos.Data.Migrations
+namespace RepublicaEmpleos.Migrations
 {
-    public partial class refactorDTO : Migration
+    public partial class fix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    FullName = table.Column<string>(nullable: true),
+                    JobDescription = table.Column<string>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Countries",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Street = table.Column<string>(nullable: true),
-                    Building = table.Column<string>(nullable: true),
-                    references = table.Column<string>(nullable: true),
-                    NeighborhoodID = table.Column<int>(nullable: true)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocTypes",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocTypes", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,22 +168,127 @@ namespace RepublicaEmpleos.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Neighborhoods",
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RoleId = table.Column<string>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cities",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
-                    SectorID = table.Column<int>(nullable: true),
-                    AddressId = table.Column<int>(nullable: true)
+                    CountryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Neighborhoods", x => x.Id);
+                    table.PrimaryKey("PK_Cities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Neighborhoods_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
+                        name: "FK_Cities_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -155,11 +312,18 @@ namespace RepublicaEmpleos.Data.Migrations
                     GenderId = table.Column<int>(nullable: true),
                     NationalityId = table.Column<int>(nullable: true),
                     MatiralStatusId = table.Column<int>(nullable: true),
-                    EducativeTitleId = table.Column<int>(nullable: true)
+                    EducativeTitleId = table.Column<int>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Profiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profiles_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Profiles_EducativeTitles_EducativeTitleId",
                         column: x => x.EducativeTitleId,
@@ -214,39 +378,37 @@ namespace RepublicaEmpleos.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
-                    CityID = table.Column<int>(nullable: true),
-                    NeighborhoodId = table.Column<int>(nullable: true)
+                    CityID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sectors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sectors_Neighborhoods_NeighborhoodId",
-                        column: x => x.NeighborhoodId,
-                        principalTable: "Neighborhoods",
+                        name: "FK_Sectors_Cities_CityID",
+                        column: x => x.CityID,
+                        principalTable: "Cities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfileAddress",
+                name: "ProfileDocType",
                 columns: table => new
                 {
-                    ProfileID = table.Column<int>(nullable: false),
-                    AddressID = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: true)
+                    DocTypeID = table.Column<int>(nullable: false),
+                    ProfileID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfileAddress", x => new { x.AddressID, x.ProfileID });
+                    table.PrimaryKey("PK_ProfileDocType", x => new { x.ProfileID, x.DocTypeID });
                     table.ForeignKey(
-                        name: "FK_ProfileAddress_Addresses_AddressID",
-                        column: x => x.AddressID,
-                        principalTable: "Addresses",
-                        principalColumn: "Id",
+                        name: "FK_ProfileDocType_DocTypes_DocTypeID",
+                        column: x => x.DocTypeID,
+                        principalTable: "DocTypes",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProfileAddress_Profiles_ProfileID",
+                        name: "FK_ProfileDocType_Profiles_ProfileID",
                         column: x => x.ProfileID,
                         principalTable: "Profiles",
                         principalColumn: "Id",
@@ -326,65 +488,135 @@ namespace RepublicaEmpleos.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cities",
+                name: "Neighborhoods",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
-                    CountryId = table.Column<int>(nullable: true),
-                    SectorId = table.Column<int>(nullable: true)
+                    SectorID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cities", x => x.Id);
+                    table.PrimaryKey("PK_Neighborhoods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cities_Sectors_SectorId",
-                        column: x => x.SectorId,
+                        name: "FK_Neighborhoods_Sectors_SectorID",
+                        column: x => x.SectorID,
                         principalTable: "Sectors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Countries",
+                name: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: true),
-                    CityId = table.Column<int>(nullable: true)
+                    Street = table.Column<string>(nullable: true),
+                    Building = table.Column<string>(nullable: true),
+                    referenc = table.Column<string>(nullable: true),
+                    NeighborhoodID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countries", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Countries_Cities_CityId",
-                        column: x => x.CityId,
-                        principalTable: "Cities",
+                        name: "FK_Addresses_Neighborhoods_NeighborhoodID",
+                        column: x => x.NeighborhoodID,
+                        principalTable: "Neighborhoods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProfileAddress",
+                columns: table => new
+                {
+                    ProfileID = table.Column<int>(nullable: false),
+                    AddressID = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProfileAddress", x => new { x.AddressID, x.ProfileID });
+                    table.ForeignKey(
+                        name: "FK_ProfileAddress_Addresses_AddressID",
+                        column: x => x.AddressID,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProfileAddress_Profiles_ProfileID",
+                        column: x => x.ProfileID,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Cities_SectorId",
+                name: "IX_Addresses_NeighborhoodID",
+                table: "Addresses",
+                column: "NeighborhoodID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cities_CountryId",
                 table: "Cities",
-                column: "SectorId");
+                column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Countries_CityId",
-                table: "Countries",
-                column: "CityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Neighborhoods_AddressId",
+                name: "IX_Neighborhoods_SectorID",
                 table: "Neighborhoods",
-                column: "AddressId");
+                column: "SectorID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProfileAddress_ProfileID",
                 table: "ProfileAddress",
                 column: "ProfileID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProfileDocType_DocTypeID",
+                table: "ProfileDocType",
+                column: "DocTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProfileEmail_EmailID",
@@ -395,6 +627,11 @@ namespace RepublicaEmpleos.Data.Migrations
                 name: "IX_ProfilePhone_ProfileId",
                 table: "ProfilePhone",
                 column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_ApplicationUserId",
+                table: "Profiles",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Profiles_EducativeTitleId",
@@ -422,9 +659,9 @@ namespace RepublicaEmpleos.Data.Migrations
                 column: "VehicleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sectors_NeighborhoodId",
+                name: "IX_Sectors_CityID",
                 table: "Sectors",
-                column: "NeighborhoodId");
+                column: "CityID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicles_VehicleTypeId",
@@ -435,10 +672,25 @@ namespace RepublicaEmpleos.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
                 name: "ProfileAddress");
+
+            migrationBuilder.DropTable(
+                name: "ProfileDocType");
 
             migrationBuilder.DropTable(
                 name: "ProfileEmail");
@@ -450,7 +702,13 @@ namespace RepublicaEmpleos.Data.Migrations
                 name: "ProfileVehicle");
 
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "DocTypes");
 
             migrationBuilder.DropTable(
                 name: "Emails");
@@ -465,7 +723,10 @@ namespace RepublicaEmpleos.Data.Migrations
                 name: "Vehicles");
 
             migrationBuilder.DropTable(
-                name: "Sectors");
+                name: "Neighborhoods");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "EducativeTitles");
@@ -483,10 +744,13 @@ namespace RepublicaEmpleos.Data.Migrations
                 name: "VehicleTypes");
 
             migrationBuilder.DropTable(
-                name: "Neighborhoods");
+                name: "Sectors");
 
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
         }
     }
 }

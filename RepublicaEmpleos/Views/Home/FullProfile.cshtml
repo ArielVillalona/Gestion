@@ -1,4 +1,4 @@
-﻿@model ProfileViewModel
+﻿@model FullProfileViewModel
 
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
@@ -46,9 +46,42 @@
             </div>
             <div class="card-body pt-0 pt-md-4">
                 <form method="post" asp-action="FullProfile" asp-controller="Home">
-                    <textarea class="form-control" id="" rows="3" placeholder="Descripcion Brebe de metas y objetivos"></textarea>
+                    @if (!string.IsNullOrWhiteSpace(TempData["StatusMessage"] as string))
+                    {
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["StatusMessage"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                    }
+                    <textarea asp-for="Profile.Objetiv" class="form-control" id="" rows="3" placeholder="Descripcion Brebe de metas y objetivos"></textarea>
                     <hr class="my-4" />
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Tu ID</label>
+                                <input asp-for="Profile.ApplicationUserId" type="text" class="form-control" readonly/>
+                                <input asp-for="Profile.Id" type="text" hidden>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Nombres</label>
+                                <input asp-for="Profile.Name"
+                                       type="text" placeholder="Nombres" class="form-control" />
+                                <span asp-validation-for="Profile.Name" class="invalid-feedback" style="display: block"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Apellidos</label>
+                                <input asp-for="Profile.LastName" class="form-control"
+                                       type="text" placeholder="Apellido" />
+                                <span asp-validation-for="Profile.LastName" class="invalid-feedback" style="display: block"></span>
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Fecha de Nacimiento</label>
@@ -65,43 +98,43 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Genero</label>
-                                <select class="form-control" asp-for="Gender.Id" asp-items="ViewBag.Genero">
+                                <select class="form-control" asp-for="Profile.GenderId" asp-items="ViewBag.Genero">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span asp-validation-for="Gender.Id" class="invalid-feedback" style="display: block"></span>
+                                <span asp-validation-for="Profile.GenderId" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Nacionalidad</label>
-                                <select class="form-control" asp-for="Nationality.Id" asp-items="ViewBag.Nacionalidad">
+                                <select class="form-control" asp-for="Profile.NationalityId" asp-items="ViewBag.Nacionalidad">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span asp-validation-for="Nationality.Id" class="invalid-feedback" style="display: block"></span>
+                                <span asp-validation-for="Profile.NationalityId" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Estado Civil</label>
-                                <select class="form-control" asp-for="MatiralStatus.Id" asp-items="ViewBag.EstadoCivil">
+                                <select class="form-control" asp-for="Profile.MatiralStatusId" asp-items="ViewBag.EstadoCivil">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span asp-validation-for="MatiralStatus.Id" class="invalid-feedback" style="display: block"></span>
+                                <span asp-validation-for="Profile.MatiralStatusId" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Maximo Nivel Educativo</label>
-                                <select class="form-control" asp-for="EducativeTitle.Id" asp-items="ViewBag.NivelEducativo">
+                                <select class="form-control" asp-for="Profile.EducativeTitleId" asp-items="ViewBag.NivelEducativo">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span asp-validation-for="EducativeTitle.Id" class="invalid-feedback" style="display: block"></span>
+                                <span asp-validation-for="Profile.EducativeTitleId" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Telefono</label>
-                                <input asp-for="account.PhoneNumber"
+                                <input asp-for="Profile.ApplicationUser.PhoneNumber"
                                        type="tel" placeholder="Telefono" class="form-control" />
                             </div>
                         </div>
@@ -163,60 +196,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form asp-controller="Home" asp-action="Profile" method="POST">
-                    <h6 class="heading-small text-muted mb-4">Informacion</h6>
-                    <div class="pl-lg-4">
-                        @if (!string.IsNullOrWhiteSpace(TempData["StatusMessage"] as string))
-                        {
 
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                @TempData["StatusMessage"]
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                        }
-                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
-                        {
-                            @foreach (var error in @ViewData.ModelState[string.Empty]?.Errors)
-                            {
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <span>@error.ErrorMessage</span>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                            }
-                        }
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-name">Nombre</label>
-                                    <input asp-for="FullName" type="text" id="input-name" class="form-control form-control-alternative" placeholder="Name" />
-                                    <span asp-validation-for="FullName" class="invalid-feedback" style="display: block"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Correo Electronico</label>
-                                    <input asp-for="Email" type="text" id="input-name" class="form-control form-control-alternative" placeholder="jesse@example.com" />
-                                    <span asp-validation-for="Email" class="invalid-feedback" style="display: block"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Situacion Laboral</label>
-                                    <input asp-for="account.JobDescription"
-                                           type="text" placeholder="Descripcion del puesto" class="form-control" />
-                                    <span asp-validation-for="account.JobDescription" class="invalid-feedback" style="display: block"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 text-center">
-                                <button class="btn btn-success mt-4 mb-4" type="submit">Guardar</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

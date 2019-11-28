@@ -15,5 +15,6 @@ namespace RepublicaEmpleos.Models.Identity
         [PersonalData]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? BirthDate { get; set; }
+        public Profile Profile { get; set; }
     }
 }

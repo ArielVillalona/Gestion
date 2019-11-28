@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepublicaEmpleos.Data;
 
-namespace RepublicaEmpleos.Data.Migrations
+namespace RepublicaEmpleos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191128170746_fix8")]
+    partial class fix8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,9 +147,11 @@ namespace RepublicaEmpleos.Data.Migrations
 
                     b.Property<string>("Street");
 
-                    b.Property<string>("references");
+                    b.Property<string>("referenc");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NeighborhoodID");
 
                     b.ToTable("Addresses");
                 });
@@ -162,11 +166,9 @@ namespace RepublicaEmpleos.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int?>("SectorId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SectorId");
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Cities");
                 });
@@ -177,13 +179,9 @@ namespace RepublicaEmpleos.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CityId");
-
                     b.Property<string>("Description");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.ToTable("Countries");
                 });
@@ -238,6 +236,19 @@ namespace RepublicaEmpleos.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MatiralStatuses");
+                });
+
+            modelBuilder.Entity("RepublicaEmpleos.Models.DocType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("DocTypes");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Models.Identity.ApplicationUser", b =>
@@ -312,6 +323,19 @@ namespace RepublicaEmpleos.Data.Migrations
                     b.ToTable("ProfileAddress");
                 });
 
+            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileDocType", b =>
+                {
+                    b.Property<int>("ProfileID");
+
+                    b.Property<int>("DocTypeID");
+
+                    b.HasKey("ProfileID", "DocTypeID");
+
+                    b.HasIndex("DocTypeID");
+
+                    b.ToTable("ProfileDocType");
+                });
+
             modelBuilder.Entity("RepublicaEmpleos.Models.ProfileEmail", b =>
                 {
                     b.Property<int>("ProfileID");
@@ -370,15 +394,13 @@ namespace RepublicaEmpleos.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AddressId");
-
                     b.Property<string>("Description");
 
                     b.Property<int?>("SectorID");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("SectorID");
 
                     b.ToTable("Neighborhoods");
                 });
@@ -402,6 +424,8 @@ namespace RepublicaEmpleos.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<DateTime>("DateOfBirth");
 
                     b.Property<int?>("EducativeTitleId");
@@ -409,14 +433,6 @@ namespace RepublicaEmpleos.Data.Migrations
                     b.Property<int?>("GenderId");
 
                     b.Property<bool>("HeadHome");
-
-                    b.Property<int?>("IdEducatibleTitle");
-
-                    b.Property<int?>("IdGender");
-
-                    b.Property<int?>("IdMatiralstatus");
-
-                    b.Property<int?>("IdNationatily");
 
                     b.Property<string>("ImagePath");
 
@@ -431,6 +447,10 @@ namespace RepublicaEmpleos.Data.Migrations
                     b.Property<string>("Objetiv");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique()
+                        .HasFilter("[ApplicationUserId] IS NOT NULL");
 
                     b.HasIndex("EducativeTitleId");
 
@@ -453,11 +473,9 @@ namespace RepublicaEmpleos.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int?>("NeighborhoodId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("NeighborhoodId");
+                    b.HasIndex("CityID");
 
                     b.ToTable("Sectors");
                 });
@@ -469,8 +487,6 @@ namespace RepublicaEmpleos.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Matricula");
-
-                    b.Property<int?>("TypeId");
 
                     b.Property<int?>("VehicleTypeId");
 
@@ -539,18 +555,18 @@ namespace RepublicaEmpleos.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RepublicaEmpleos.City", b =>
+            modelBuilder.Entity("RepublicaEmpleos.Address", b =>
                 {
-                    b.HasOne("RepublicaEmpleos.Sector")
-                        .WithMany("City")
-                        .HasForeignKey("SectorId");
+                    b.HasOne("RepublicaEmpleos.Neighborhood", "Neighborhood")
+                        .WithMany("Addresses")
+                        .HasForeignKey("NeighborhoodID");
                 });
 
-            modelBuilder.Entity("RepublicaEmpleos.Country", b =>
+            modelBuilder.Entity("RepublicaEmpleos.City", b =>
                 {
-                    b.HasOne("RepublicaEmpleos.City")
-                        .WithMany("Country")
-                        .HasForeignKey("CityId");
+                    b.HasOne("RepublicaEmpleos.Country", "Country")
+                        .WithMany("Cities")
+                        .HasForeignKey("CountryId");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Models.ProfileAddress", b =>
@@ -562,6 +578,19 @@ namespace RepublicaEmpleos.Data.Migrations
 
                     b.HasOne("RepublicaEmpleos.Profile", "Profile")
                         .WithMany("ProfileAddresses")
+                        .HasForeignKey("ProfileID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileDocType", b =>
+                {
+                    b.HasOne("RepublicaEmpleos.Models.DocType", "DocType")
+                        .WithMany("ProfileDocTypes")
+                        .HasForeignKey("DocTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
+                        .WithMany("ProfileDocTypes")
                         .HasForeignKey("ProfileID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -607,35 +636,39 @@ namespace RepublicaEmpleos.Data.Migrations
 
             modelBuilder.Entity("RepublicaEmpleos.Neighborhood", b =>
                 {
-                    b.HasOne("RepublicaEmpleos.Address")
-                        .WithMany("Neighborhood")
-                        .HasForeignKey("AddressId");
+                    b.HasOne("RepublicaEmpleos.Sector", "Sector")
+                        .WithMany("Neighborhoods")
+                        .HasForeignKey("SectorID");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Profile", b =>
                 {
+                    b.HasOne("RepublicaEmpleos.Models.Identity.ApplicationUser", "ApplicationUser")
+                        .WithOne("Profile")
+                        .HasForeignKey("RepublicaEmpleos.Profile", "ApplicationUserId");
+
                     b.HasOne("RepublicaEmpleos.EducativeTitle", "EducativeTitle")
-                        .WithMany()
+                        .WithMany("Profile")
                         .HasForeignKey("EducativeTitleId");
 
                     b.HasOne("RepublicaEmpleos.Gender", "Gender")
-                        .WithMany()
+                        .WithMany("Profile")
                         .HasForeignKey("GenderId");
 
                     b.HasOne("RepublicaEmpleos.MatiralStatus", "MatiralStatus")
-                        .WithMany()
+                        .WithMany("Profile")
                         .HasForeignKey("MatiralStatusId");
 
                     b.HasOne("RepublicaEmpleos.Nationality", "Nationality")
-                        .WithMany()
+                        .WithMany("Profile")
                         .HasForeignKey("NationalityId");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Sector", b =>
                 {
-                    b.HasOne("RepublicaEmpleos.Neighborhood")
-                        .WithMany("Sector")
-                        .HasForeignKey("NeighborhoodId");
+                    b.HasOne("RepublicaEmpleos.City", "City")
+                        .WithMany("Sectors")
+                        .HasForeignKey("CityID");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Vehicle", b =>

@@ -105,8 +105,7 @@ namespace RepublicaEmpleos.Controllers
                 new SelectListItem() {Text = "5' 8\"", Value = "2"},
                 new SelectListItem() {Text = "5' 9\"", Value = "3"}
             };
-
-            ViewData["Genero"] = new SelectList(genero.OrderBy(x=>x.Description),"Id","Description");
+            ViewData["Genero"] = new SelectList(genero.OrderBy(x => x.Description), "Id", "Description");
             ViewData["Nacionalidad"] = new SelectList(Nacionalidad.OrderBy(x => x.Description), "Id", "Description");
             ViewData["EstadoCivil"] = new SelectList(EstadoCivil.OrderBy(x => x.Description), "Id", "Description");
             ViewData["NivelEducativo"] = new SelectList(NivelEducativo.OrderBy(x => x.Description), "Id", "Description");
@@ -114,37 +113,40 @@ namespace RepublicaEmpleos.Controllers
             ViewData["Vehiculo"] = Vehiculo;
             ViewData["CabezaHogar"] = CabezaHogar;
             ViewData["Estatura"] = Estatura;
-
-            var Profile = await _userManager.GetUserAsync(User);
-            if (Profile == null)
+            var profile = await _userManager.GetUserAsync(User);
+            var fullprofile = _dbContext.Profiles.Where(x => x.ApplicationUserId == profile.Id).FirstOrDefault();
+            if (profile == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            return View(new ProfileViewModel
+            return View(new FullProfileViewModel
             {
-                Email = Profile.Email,
-                FullName = Profile.FullName,
-                account = new ApplicationUser
-                {
-                    BirthDate = Profile.BirthDate,
-                    PhoneNumber = Profile.PhoneNumber,
-                    JobDescription = Profile.JobDescription
-                }
+                Profile = fullprofile
             });
         }
-
+        [ExportModelState]
         [HttpPost("/FullProfile")]
-        public async Task<IActionResult> FullProfile([FromForm]ProfileViewModel input)
+        public async Task<IActionResult> FullProfile([FromForm]FullProfileViewModel input)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction(nameof(FullProfile));
-            }
             var user = await _userManager.GetUserAsync(User);
-            if(user == null) { return NotFound(); }
-            
+            if (user == null) { return NotFound(); }
+
+            if (input.Profile.ApplicationUserId == user.Id)
+            {
+                _dbContext.Profiles.Update(input.Profile);
+                await _dbContext.SaveChangesAsync();
+                StatusMessage = "Your profile has been updated";
+            }
+            else
+            {
+                input.Profile.ApplicationUserId = user.Id;
+                _dbContext.Profiles.Add(input.Profile);
+                await _dbContext.SaveChangesAsync();
+                StatusMessage = "Your profile has been updated";
+            }
             return RedirectToAction(nameof(FullProfile));
         }
+
         [ExportModelState]
         [HttpPost("/profile")]
         public async Task<IActionResult> UpdateProfile(
