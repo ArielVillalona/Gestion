@@ -4,8 +4,9 @@ using System.Text;
 
 namespace RepublicaEmpleos
 {
-    public class Sector:DTO.Sector
+    public class Sector : DTO.Sector
     {
-        public virtual ICollection<City> City { get; set; }
+        public City City { get; set; }
+        public virtual ICollection<Neighborhood> Neighborhoods { get; set; }
     }
 }

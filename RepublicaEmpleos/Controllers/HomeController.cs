@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace RepublicaEmpleos.Controllers
 {
@@ -25,12 +27,14 @@ namespace RepublicaEmpleos.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _dbContext;
 
         [TempData]
         public string StatusMessage { get; set; }
 
         public HomeController(
             ApplicationDbContextDeployd db,
+            ApplicationDbContext dbContext,
             ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
@@ -39,6 +43,7 @@ namespace RepublicaEmpleos.Controllers
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
+            _dbContext = dbContext;
         }
 
         [HttpGet("/")]
@@ -79,24 +84,10 @@ namespace RepublicaEmpleos.Controllers
         [HttpGet("/FullProfile")]
         public async Task<IActionResult> FullProfile()
         {
-            var genero = new List<SelectListItem> {
-                new SelectListItem() {Text = "Masculino", Value = "1", Selected=true},
-                new SelectListItem() {Text = "Femenino", Value = "2"},
-                new SelectListItem() {Text = "No Binario", Value = "3"}
-            };
-            var Nacionalidad = new List<SelectListItem> {
-                new SelectListItem() {Text = "Dominicano", Value = "1", Selected=true},
-            };
-            var EstadoCivil = new List<SelectListItem> {
-                new SelectListItem() {Text = "Soltero", Value = "1", Selected=true},
-                new SelectListItem() {Text = "Casado", Value = "2"},
-                new SelectListItem() {Text = "union libre", Value = "3"}
-            };
-            var NivelEducativo = new List<SelectListItem> {
-                new SelectListItem() {Text = "Estudiante", Value = "1", Selected=true},
-                new SelectListItem() {Text = "Universitario", Value = "2"},
-                new SelectListItem() {Text = "Bachiller", Value = "3"}
-            };
+            var genero = await _dbContext.Genders.ToListAsync();
+            var Nacionalidad = await _dbContext.Nationalities.ToListAsync();
+            var EstadoCivil = await _dbContext.MatiralStatuses.ToListAsync();
+            var NivelEducativo = await _dbContext.EducativeTitles.ToListAsync();
             var Licencia = new List<SelectListItem> {
                 new SelectListItem() {Text = "No", Value = "1", Selected=true},
                 new SelectListItem() {Text = "Si", Value = "2"},
@@ -115,10 +106,10 @@ namespace RepublicaEmpleos.Controllers
                 new SelectListItem() {Text = "5' 9\"", Value = "3"}
             };
 
-            ViewData["Genero"] = genero;
-            ViewData["Nacionalidad"] = Nacionalidad;
-            ViewData["EstadoCivil"] = EstadoCivil;
-            ViewData["NivelEducativo"] = NivelEducativo;
+            ViewData["Genero"] = new SelectList(genero.OrderBy(x=>x.Description),"Id","Description");
+            ViewData["Nacionalidad"] = new SelectList(Nacionalidad.OrderBy(x => x.Description), "Id", "Description");
+            ViewData["EstadoCivil"] = new SelectList(EstadoCivil.OrderBy(x => x.Description), "Id", "Description");
+            ViewData["NivelEducativo"] = new SelectList(NivelEducativo.OrderBy(x => x.Description), "Id", "Description");
             ViewData["Licencia"] = Licencia;
             ViewData["Vehiculo"] = Vehiculo;
             ViewData["CabezaHogar"] = CabezaHogar;
@@ -142,6 +133,18 @@ namespace RepublicaEmpleos.Controllers
             });
         }
 
+        [HttpPost("/FullProfile")]
+        public async Task<IActionResult> FullProfile([FromForm]ProfileViewModel input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(FullProfile));
+            }
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null) { return NotFound(); }
+            
+            return RedirectToAction(nameof(FullProfile));
+        }
         [ExportModelState]
         [HttpPost("/profile")]
         public async Task<IActionResult> UpdateProfile(

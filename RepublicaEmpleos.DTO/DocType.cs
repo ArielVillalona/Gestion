@@ -4,9 +4,9 @@ using System.Text;
 
 namespace RepublicaEmpleos.DTO
 {
-    public class Email
+    public class DocType
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string Description { get; set; }
     }
 }

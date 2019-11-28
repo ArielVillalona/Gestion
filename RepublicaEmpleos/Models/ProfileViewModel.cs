@@ -14,6 +14,11 @@ namespace RepublicaEmpleos.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        public Profile Profile { get; set; }
         public ApplicationUser account { get; set; }
+        public Gender Gender { get; set; }
+        public Nationality Nationality { get; set; }
+        public MatiralStatus MatiralStatus { get; set; }
+        public EducativeTitle EducativeTitle { get; set; }
     }
 }

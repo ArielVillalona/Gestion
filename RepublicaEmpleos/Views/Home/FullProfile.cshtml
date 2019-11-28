@@ -56,45 +56,46 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                     </div>
-                                    <input asp-for="account.BirthDate"
+                                    <input asp-for="Profile.DateOfBirth"
                                            class="form-control datepicker" placeholder="Select date" type="text">
+                                    <span asp-validation-for="Profile.DateOfBirth" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Genero</label>
-                                <select class="form-control" asp-items="ViewBag.Genero">
+                                <select class="form-control" asp-for="Gender.Id" asp-items="ViewBag.Genero">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span class="text-danger"></span>
+                                <span asp-validation-for="Gender.Id" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Nacionalidad</label>
-                                <select class="form-control" asp-items="ViewBag.Nacionalidad">
+                                <select class="form-control" asp-for="Nationality.Id" asp-items="ViewBag.Nacionalidad">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span class="text-danger"></span>
+                                <span asp-validation-for="Nationality.Id" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Estado Civil</label>
-                                <select class="form-control" asp-items="ViewBag.EstadoCivil">
+                                <select class="form-control" asp-for="MatiralStatus.Id" asp-items="ViewBag.EstadoCivil">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span class="text-danger"></span>
+                                <span asp-validation-for="MatiralStatus.Id" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Maximo Nivel Educativo</label>
-                                <select class="form-control" asp-items="ViewBag.NivelEducativo">
+                                <select class="form-control" asp-for="EducativeTitle.Id" asp-items="ViewBag.NivelEducativo">
                                     <option value="">Seleccione</option>
                                 </select>
-                                <span class="text-danger"></span>
+                                <span asp-validation-for="EducativeTitle.Id" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -142,6 +143,9 @@
                                 </select>
                                 <span class="text-danger"></span>
                             </div>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                            <button class="btn btn-success mt-4 mb-4" type="submit">Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -204,7 +208,7 @@
                                     <label class="form-control-label" for="input-email">Situacion Laboral</label>
                                     <input asp-for="account.JobDescription"
                                            type="text" placeholder="Descripcion del puesto" class="form-control" />
-                                    <span asp-validation-for="Email" class="invalid-feedback" style="display: block"></span>
+                                    <span asp-validation-for="account.JobDescription" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                             <div class="col-lg-12 text-center">

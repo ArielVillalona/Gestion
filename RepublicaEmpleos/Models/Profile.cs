@@ -16,5 +16,6 @@ namespace RepublicaEmpleos
         public virtual ICollection<ProfileEmail> ProfileEmails { get; set; } = new List<ProfileEmail>();
         public virtual ICollection<ProfilePhone> ProfilePhones { get; set; } = new List<ProfilePhone>();
         public virtual ICollection<ProfileVehicle> ProfileVehicles { get; set; } = new List<ProfileVehicle>();
+        public virtual ICollection<ProfileDocType> ProfileDocTypes { get; set; } = new List<ProfileDocType>();
     }
 }
