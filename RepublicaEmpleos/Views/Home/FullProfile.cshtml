@@ -62,7 +62,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Tu ID</label>
-                                <input asp-for="Profile.ApplicationUserId" type="text" class="form-control" readonly/>
+                                <input asp-for="Profile.ApplicationUserId" type="text" class="form-control" readonly />
                                 <input asp-for="Profile.Id" type="text" hidden>
                             </div>
                         </div>
@@ -131,52 +131,9 @@
                                 <span asp-validation-for="Profile.EducativeTitleId" class="invalid-feedback" style="display: block"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">Telefono</label>
-                                <input asp-for="Profile.ApplicationUser.PhoneNumber"
-                                       type="tel" placeholder="Telefono" class="form-control" />
-                            </div>
-                        </div>
                     </div>
                     <hr class="my-4" />
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label">Licencia de Conducir</label>
-                                <select class="form-control" asp-items="ViewBag.Licencia">
-                                    <option value="">Seleccione</option>
-                                </select>
-                                <span class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label">Posee Vehiculo</label>
-                                <select class="form-control" asp-items="ViewBag.Vehiculo">
-                                    <option value="">Seleccione</option>
-                                </select>
-                                <span class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label">Jefe de hogar?</label>
-                                <select class="form-control" asp-items="ViewBag.CabezaHogar">
-                                    <option value="">Seleccione</option>
-                                </select>
-                                <span class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label">Estatura</label>
-                                <select class="form-control" asp-items="ViewBag.Estatura">
-                                    <option value="">Seleccione</option>
-                                </select>
-                                <span class="text-danger"></span>
-                            </div>
-                        </div>
                         <div class="col-lg-12 text-center">
                             <button class="btn btn-success mt-4 mb-4" type="submit">Guardar</button>
                         </div>
