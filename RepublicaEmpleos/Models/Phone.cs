@@ -7,7 +7,7 @@ namespace RepublicaEmpleos
 {
     public class Phone:DTO.Phone
     {
-        public virtual ICollection<ProfilePhone> ProfilePhones { get; set; }
+        public Profile Profile { get; set; }
         
     }
 }

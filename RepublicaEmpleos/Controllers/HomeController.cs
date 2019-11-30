@@ -119,15 +119,20 @@ namespace RepublicaEmpleos.Controllers
 
             var profile = await _userManager.GetUserAsync(User);
             var fullprofile = _profileServices.GetProfileById(profile.Id);
-
+            var phoness = new List<Phone>();
+            if (fullprofile != null)
+            {
+                phoness = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Id).ToList();
+            }
             if (profile == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
             return View(new FullProfileViewModel
             {
-                Profile = fullprofile
-            });
+                Profile = fullprofile,
+                Phone = phoness
+        });
         }
         [ExportModelState]
         [HttpPost("/FullProfile")]

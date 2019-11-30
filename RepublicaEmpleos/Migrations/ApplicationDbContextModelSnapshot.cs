@@ -347,19 +347,6 @@ namespace RepublicaEmpleos.Migrations
                     b.ToTable("ProfileEmail");
                 });
 
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfilePhone", b =>
-                {
-                    b.Property<int>("PhoneId");
-
-                    b.Property<int>("ProfileId");
-
-                    b.HasKey("PhoneId", "ProfileId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.ToTable("ProfilePhone");
-                });
-
             modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
                 {
                     b.Property<int>("ProfileID");
@@ -411,7 +398,11 @@ namespace RepublicaEmpleos.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("ProfileId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Phones");
                 });
@@ -606,19 +597,6 @@ namespace RepublicaEmpleos.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfilePhone", b =>
-                {
-                    b.HasOne("RepublicaEmpleos.Phone", "Phone")
-                        .WithMany("ProfilePhones")
-                        .HasForeignKey("PhoneId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
-                        .WithMany("ProfilePhones")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
                 {
                     b.HasOne("RepublicaEmpleos.Profile", "Profile")
@@ -637,6 +615,13 @@ namespace RepublicaEmpleos.Migrations
                     b.HasOne("RepublicaEmpleos.Sector", "Sector")
                         .WithMany("Neighborhoods")
                         .HasForeignKey("SectorID");
+                });
+
+            modelBuilder.Entity("RepublicaEmpleos.Phone", b =>
+                {
+                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
+                        .WithMany("Phones")
+                        .HasForeignKey("ProfileId");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Profile", b =>

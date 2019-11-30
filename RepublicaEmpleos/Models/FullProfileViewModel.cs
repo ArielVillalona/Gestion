@@ -7,7 +7,12 @@ namespace RepublicaEmpleos.Models
 {
     public class FullProfileViewModel
     {
+        public FullProfileViewModel()
+        {
+            Phone = new List<Phone>();
+        }
         public Profile Profile { get; set; }
+        public List<Phone> Phone { get; set; }
         public Gender Gender { get; set; }
         public Nationality Nationality { get; set; }
         public MatiralStatus MatiralStatus { get; set; }

@@ -10,8 +10,8 @@ using RepublicaEmpleos.Data;
 namespace RepublicaEmpleos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191128110922_fix5")]
-    partial class fix5
+    [Migration("20191129014052_test1")]
+    partial class test1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -349,19 +349,6 @@ namespace RepublicaEmpleos.Migrations
                     b.ToTable("ProfileEmail");
                 });
 
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfilePhone", b =>
-                {
-                    b.Property<int>("PhoneId");
-
-                    b.Property<int>("ProfileId");
-
-                    b.HasKey("PhoneId", "ProfileId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.ToTable("ProfilePhone");
-                });
-
             modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
                 {
                     b.Property<int>("ProfileID");
@@ -413,7 +400,11 @@ namespace RepublicaEmpleos.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("ProfileId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Phones");
                 });
@@ -448,23 +439,17 @@ namespace RepublicaEmpleos.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("EducativeTitleId")
+                    b.HasIndex("ApplicationUserId")
                         .IsUnique()
-                        .HasFilter("[EducativeTitleId] IS NOT NULL");
+                        .HasFilter("[ApplicationUserId] IS NOT NULL");
 
-                    b.HasIndex("GenderId")
-                        .IsUnique()
-                        .HasFilter("[GenderId] IS NOT NULL");
+                    b.HasIndex("EducativeTitleId");
 
-                    b.HasIndex("MatiralStatusId")
-                        .IsUnique()
-                        .HasFilter("[MatiralStatusId] IS NOT NULL");
+                    b.HasIndex("GenderId");
 
-                    b.HasIndex("NationalityId")
-                        .IsUnique()
-                        .HasFilter("[NationalityId] IS NOT NULL");
+                    b.HasIndex("MatiralStatusId");
+
+                    b.HasIndex("NationalityId");
 
                     b.ToTable("Profiles");
                 });
@@ -614,19 +599,6 @@ namespace RepublicaEmpleos.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfilePhone", b =>
-                {
-                    b.HasOne("RepublicaEmpleos.Phone", "Phone")
-                        .WithMany("ProfilePhones")
-                        .HasForeignKey("PhoneId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
-                        .WithMany("ProfilePhones")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
                 {
                     b.HasOne("RepublicaEmpleos.Profile", "Profile")
@@ -647,27 +619,34 @@ namespace RepublicaEmpleos.Migrations
                         .HasForeignKey("SectorID");
                 });
 
+            modelBuilder.Entity("RepublicaEmpleos.Phone", b =>
+                {
+                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
+                        .WithMany("Phones")
+                        .HasForeignKey("ProfileId");
+                });
+
             modelBuilder.Entity("RepublicaEmpleos.Profile", b =>
                 {
                     b.HasOne("RepublicaEmpleos.Models.Identity.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .WithOne("Profile")
+                        .HasForeignKey("RepublicaEmpleos.Profile", "ApplicationUserId");
 
                     b.HasOne("RepublicaEmpleos.EducativeTitle", "EducativeTitle")
-                        .WithOne("Profile")
-                        .HasForeignKey("RepublicaEmpleos.Profile", "EducativeTitleId");
+                        .WithMany("Profile")
+                        .HasForeignKey("EducativeTitleId");
 
                     b.HasOne("RepublicaEmpleos.Gender", "Gender")
-                        .WithOne("Profile")
-                        .HasForeignKey("RepublicaEmpleos.Profile", "GenderId");
+                        .WithMany("Profile")
+                        .HasForeignKey("GenderId");
 
                     b.HasOne("RepublicaEmpleos.MatiralStatus", "MatiralStatus")
-                        .WithOne("Profile")
-                        .HasForeignKey("RepublicaEmpleos.Profile", "MatiralStatusId");
+                        .WithMany("Profile")
+                        .HasForeignKey("MatiralStatusId");
 
                     b.HasOne("RepublicaEmpleos.Nationality", "Nationality")
-                        .WithOne("Profile")
-                        .HasForeignKey("RepublicaEmpleos.Profile", "NationalityId");
+                        .WithMany("Profile")
+                        .HasForeignKey("NationalityId");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Sector", b =>

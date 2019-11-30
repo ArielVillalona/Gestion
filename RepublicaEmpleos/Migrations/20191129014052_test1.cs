@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepublicaEmpleos.Migrations
 {
-    public partial class fix : Migration
+    public partial class test1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -139,19 +139,6 @@ namespace RepublicaEmpleos.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Nationalities", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Phones",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phones", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -305,10 +292,6 @@ namespace RepublicaEmpleos.Migrations
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     HeadHome = table.Column<bool>(nullable: false),
                     ImagePath = table.Column<string>(nullable: true),
-                    IdGender = table.Column<int>(nullable: true),
-                    IdNationatily = table.Column<int>(nullable: true),
-                    IdMatiralstatus = table.Column<int>(nullable: true),
-                    IdEducatibleTitle = table.Column<int>(nullable: true),
                     GenderId = table.Column<int>(nullable: true),
                     NationalityId = table.Column<int>(nullable: true),
                     MatiralStatusId = table.Column<int>(nullable: true),
@@ -357,7 +340,6 @@ namespace RepublicaEmpleos.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Matricula = table.Column<string>(nullable: true),
-                    TypeId = table.Column<int>(nullable: true),
                     VehicleTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -387,6 +369,26 @@ namespace RepublicaEmpleos.Migrations
                         name: "FK_Sectors_Cities_CityID",
                         column: x => x.CityID,
                         principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Phones",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: true),
+                    ProfileId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Phones", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Phones_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -434,30 +436,6 @@ namespace RepublicaEmpleos.Migrations
                     table.ForeignKey(
                         name: "FK_ProfileEmail_Profiles_ProfileID",
                         column: x => x.ProfileID,
-                        principalTable: "Profiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProfilePhone",
-                columns: table => new
-                {
-                    ProfileId = table.Column<int>(nullable: false),
-                    PhoneId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProfilePhone", x => new { x.PhoneId, x.ProfileId });
-                    table.ForeignKey(
-                        name: "FK_ProfilePhone_Phones_PhoneId",
-                        column: x => x.PhoneId,
-                        principalTable: "Phones",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProfilePhone_Profiles_ProfileId",
-                        column: x => x.ProfileId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -609,6 +587,11 @@ namespace RepublicaEmpleos.Migrations
                 column: "SectorID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Phones_ProfileId",
+                table: "Phones",
+                column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProfileAddress_ProfileID",
                 table: "ProfileAddress",
                 column: "ProfileID");
@@ -624,14 +607,11 @@ namespace RepublicaEmpleos.Migrations
                 column: "EmailID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfilePhone_ProfileId",
-                table: "ProfilePhone",
-                column: "ProfileId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Profiles_ApplicationUserId",
                 table: "Profiles",
-                column: "ApplicationUserId");
+                column: "ApplicationUserId",
+                unique: true,
+                filter: "[ApplicationUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Profiles_EducativeTitleId",
@@ -687,6 +667,9 @@ namespace RepublicaEmpleos.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Phones");
+
+            migrationBuilder.DropTable(
                 name: "ProfileAddress");
 
             migrationBuilder.DropTable(
@@ -694,9 +677,6 @@ namespace RepublicaEmpleos.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProfileEmail");
-
-            migrationBuilder.DropTable(
-                name: "ProfilePhone");
 
             migrationBuilder.DropTable(
                 name: "ProfileVehicle");
@@ -712,9 +692,6 @@ namespace RepublicaEmpleos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Emails");
-
-            migrationBuilder.DropTable(
-                name: "Phones");
 
             migrationBuilder.DropTable(
                 name: "Profiles");

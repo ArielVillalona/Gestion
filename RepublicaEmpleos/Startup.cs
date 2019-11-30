@@ -70,6 +70,7 @@ namespace RepublicaEmpleos
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             services.AddScoped<IProfileServices,ProfileServices>();
+            services.AddScoped<IPhoneServices<Phone>, PhoneServices>();
 
             services.Configure<IdentityOptions>(options =>
             {
