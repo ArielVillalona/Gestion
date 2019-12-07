@@ -1,4 +1,4 @@
-﻿@model List<ProfileDocType>
+﻿@model List<RepublicaEmpleos.DTO.ProfileDocType>
 
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
@@ -20,7 +20,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DocType.Description)
+                        @Html.DisplayFor(modelItem => item.DocTypeID)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.NumberDocument)

@@ -1,4 +1,4 @@
-﻿@model List<Vehicle>
+﻿@model List<RepublicaEmpleos.DTO.Vehicle>
 
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
@@ -23,7 +23,7 @@
                         @Html.DisplayFor(modelItem => item.Matricula)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.VehicleType.Description)
+                        @Html.DisplayFor(modelItem => item.VehicleTypeId)
                     </td>
                     <td>
                         <a asp-controller="vehicles" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -32,9 +32,10 @@ namespace RepublicaEmpleos.Services
                                         .Include(x=> x.ProfileVehicles)
                                             .ThenInclude(y => y.VehicleType)
                                         .Include(x => x.ProfileEmails)
-                                        .Select(z => z.MapProfile())
+                                        .Include(x => x.ProfileDocTypes)
+                                            .ThenInclude(x => x.DocTypes)
                                         .SingleOrDefaultAsync(x=>x.ApplicationUserId==Id);
-            return prof;
+            return prof.MapProfile();
         }
         public Task<IEnumerable<Profile>> GetProfiles()
         {

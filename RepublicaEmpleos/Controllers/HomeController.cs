@@ -132,54 +132,39 @@ namespace RepublicaEmpleos.Controllers
             if (fullprofile != null)
             {
                 //fullprofile.Result.Phones = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                phoness = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                Emails = _dbContext.Emails.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                vehicles = _dbContext.Vehicles.Include(x=> x.VehicleType).Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                docs = _dbContext.ProfileDocType.Include(x => x.DocType).Where(x => x.ProfileID == fullprofile.Result.Id).ToList();
+                //phoness = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
+                //Emails = _dbContext.Emails.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
+                //vehicles = _dbContext.Vehicles.Include(x=> x.VehicleType).Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
+                //docs = _dbContext.ProfileDocType.Include(x => x.DocType).Where(x => x.ProfileID == fullprofile.Result.Id).ToList();
             }
-            
             return View(new FullProfileViewModel
             {
-                Profile = new Profile()
-                {
-                    Id=fullprofile.Result.Id,
-                    ApplicationUserId = fullprofile.Result.ApplicationUserId,
-                    DateOfBirth = fullprofile.Result.DateOfBirth,
-                    EducativeTitleId = fullprofile.Result.EducativeTitleId,
-                    GenderId = fullprofile.Result.GenderId,
-                    HeadHome = fullprofile.Result.HeadHome,
-                    ImagePath = fullprofile.Result.ImagePath,
-                    MatiralStatusId = fullprofile.Result.MatiralStatusId,
-                    Name = fullprofile.Result.Name,
-                    LastName = fullprofile.Result.LastName,
-                    NationalityId = fullprofile.Result.NationalityId,
-                    Objetiv = fullprofile.Result.Objetiv
-                },
-                Phone = phoness,
-                Emails = Emails,
-                Vehicles = vehicles,
-                ProfileDocTypes = docs,
+                profileResponse = fullprofile,
+                //Phone = phoness,
+                //Emails = Emails,
+                //Vehicles = vehicles,
+                //ProfileDocTypes = docs,
         });
         }
         [ExportModelState]
-        [HttpPost("/FullProfile")]
-        public async Task<IActionResult> FullProfile([FromForm]FullProfileViewModel input)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) { return NotFound(); }
+        //[HttpPost("/FullProfile")]
+        //public async Task<IActionResult> FullProfile([FromForm]FullProfileViewModel input)
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+        //    if (user == null) { return NotFound(); }
 
-            if (input.Profile.ApplicationUserId == user.Id)
-            {
-                await _profileServices.UpdateProfileAsync(input.Profile);
-            }
-            else
-            {
-                input.Profile.ApplicationUserId = user.Id;
-                await _profileServices.CreateProfileAsync(input.Profile);
-            }
-            StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(FullProfile));
-        }
+        //    if (input.profileResponse.Result.ApplicationUserId == user.Id)
+        //    {
+        //        await _profileServices.UpdateProfileAsync(input.Profile);
+        //    }
+        //    else
+        //    {
+        //        input.Profile.ApplicationUserId = user.Id;
+        //        await _profileServices.CreateProfileAsync(input.Profile);
+        //    }
+        //    StatusMessage = "Your profile has been updated";
+        //    return RedirectToAction(nameof(FullProfile));
+        //}
 
         [ExportModelState]
         [HttpPost("/profile")]

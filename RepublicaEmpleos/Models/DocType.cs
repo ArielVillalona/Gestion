@@ -7,6 +7,9 @@ namespace RepublicaEmpleos.Models
 {
     public class DocType:DTO.DocType
     {
-        public virtual ICollection<ProfileDocType> ProfileDocTypes { get; set; }
+
+        public DocType docType { get; set; }
+        public Profile Profile { get; set; }
+
     }
 }

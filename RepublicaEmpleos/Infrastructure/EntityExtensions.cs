@@ -49,6 +49,14 @@ namespace RepublicaEmpleos.Infrastructure
                             NeighborhoodID = PA.Address.NeighborhoodID
                         })
                 .ToList(),
+                ProfileDocTypes = profile.ProfileDocTypes?
+                    .Select(x=>
+                        new DTO.ProfileDocType{ 
+                            ProfileID = x.ProfileID,
+                            DocTypeID = x.DocTypeID,
+                            NumberDocument = x.NumberDocument
+                        })
+                .ToList(),
                 DateOfBirth = profile.DateOfBirth,
                 GenderId = profile.GenderId,
                 EducativeTitleId = profile.EducativeTitleId,
@@ -59,7 +67,7 @@ namespace RepublicaEmpleos.Infrastructure
                 MatiralStatusId=profile.MatiralStatusId,
                 NationalityId = profile.NationalityId,
                 ImagePath = profile.ImagePath,
-                ApplicationUserId = profile.ApplicationUserId
+                ApplicationUserId = profile.ApplicationUserId,
             };
     }
 }

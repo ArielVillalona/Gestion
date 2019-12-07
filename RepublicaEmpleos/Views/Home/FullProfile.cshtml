@@ -56,30 +56,30 @@
                                 </button>
                             </div>
                         }
-                        <textarea asp-for="Profile.Objetiv" class="form-control" id="" rows="3" placeholder="Descripcion Brebe de metas y objetivos"></textarea>
+                        <textarea asp-for="profileResponse.Result.Objetiv" class="form-control" id="" rows="3" placeholder="Descripcion Brebe de metas y objetivos"></textarea>
                         <hr class="my-4" />
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Tu ID</label>
-                                    <input asp-for="Profile.ApplicationUserId" type="text" class="form-control" readonly />
-                                    <input asp-for="Profile.Id" type="text" hidden>
+                                    <input asp-for="profileResponse.Result.ApplicationUserId" type="text" class="form-control" readonly />
+                                    <input asp-for="profileResponse.Result.Id" type="text" hidden>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Nombres</label>
-                                    <input asp-for="Profile.Name"
+                                    <input asp-for="profileResponse.Result.Name"
                                            type="text" placeholder="Nombres" class="form-control" />
-                                    <span asp-validation-for="Profile.Name" class="invalid-feedback" style="display: block"></span>
+                                    <span asp-validation-for="profileResponse.Result.Name" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Apellidos</label>
-                                    <input asp-for="Profile.LastName" class="form-control"
+                                    <input asp-for="profileResponse.Result.LastName" class="form-control"
                                            type="text" placeholder="Apellido" />
-                                    <span asp-validation-for="Profile.LastName" class="invalid-feedback" style="display: block"></span>
+                                    <span asp-validation-for="profileResponse.Result.LastName" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -89,46 +89,46 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                         </div>
-                                        <input asp-for="Profile.DateOfBirth"
+                                        <input asp-for="profileResponse.Result.DateOfBirth"
                                                class="form-control datepicker" placeholder="Select date" type="text">
-                                        <span asp-validation-for="Profile.DateOfBirth" class="invalid-feedback" style="display: block"></span>
+                                        <span asp-validation-for="profileResponse.Result.DateOfBirth" class="invalid-feedback" style="display: block"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Genero</label>
-                                    <select class="form-control" asp-for="Profile.GenderId" asp-items="ViewBag.Genero">
+                                    <select class="form-control" asp-for="profileResponse.Result.GenderId" asp-items="ViewBag.Genero">
                                         <option value="">Seleccione</option>
                                     </select>
-                                    <span asp-validation-for="Profile.GenderId" class="invalid-feedback" style="display: block"></span>
+                                    <span asp-validation-for="profileResponse.Result.GenderId" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Nacionalidad</label>
-                                    <select class="form-control" asp-for="Profile.NationalityId" asp-items="ViewBag.Nacionalidad">
+                                    <select class="form-control" asp-for="profileResponse.Result.NationalityId" asp-items="ViewBag.Nacionalidad">
                                         <option value="">Seleccione</option>
                                     </select>
-                                    <span asp-validation-for="Profile.NationalityId" class="invalid-feedback" style="display: block"></span>
+                                    <span asp-validation-for="profileResponse.Result.NationalityId" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Estado Civil</label>
-                                    <select class="form-control" asp-for="Profile.MatiralStatusId" asp-items="ViewBag.EstadoCivil">
+                                    <select class="form-control" asp-for="profileResponse.Result.MatiralStatusId" asp-items="ViewBag.EstadoCivil">
                                         <option value="">Seleccione</option>
                                     </select>
-                                    <span asp-validation-for="Profile.MatiralStatusId" class="invalid-feedback" style="display: block"></span>
+                                    <span asp-validation-for="profileResponse.Result.MatiralStatusId" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Maximo Nivel Educativo</label>
-                                    <select class="form-control" asp-for="Profile.EducativeTitleId" asp-items="ViewBag.NivelEducativo">
+                                    <select class="form-control" asp-for="profileResponse.Result.EducativeTitleId" asp-items="ViewBag.NivelEducativo">
                                         <option value="">Seleccione</option>
                                     </select>
-                                    <span asp-validation-for="Profile.EducativeTitleId" class="invalid-feedback" style="display: block"></span>
+                                    <span asp-validation-for="profileResponse.Result.EducativeTitleId" class="invalid-feedback" style="display: block"></span>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                 </div>
             </div>
         </div>
-        @if (Model.Profile.Id > 0)
+        @if (Model.profileResponse.Result.Id > 0)
         {
             <div class="col-xl-4 order-xl-6">
                 <div class="card bg-secondar shadow">
@@ -151,13 +151,13 @@
                                 <h3 class="mb-0">Telefonos</h3>
                             </div>
                             <div class="col-4 text-right">
-                                <a asp-controller="Phones" asp-action="Create" asp-route-id="@Model.Profile.Id"
+                                <a asp-controller="Phones" asp-action="Create" asp-route-id="@Model.profileResponse.Result.Id"
                                    class="btn btn-primary">Create New</a>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <partial name="_PhonePartial" model="Model.Phone" />
+                        <partial name="_PhonePartial" model="Model.profileResponse.Result.Phones" />
                     </div>
                 </div>
             </div>
@@ -170,13 +170,13 @@
                                 <h3 class="mb-0">Correos</h3>
                             </div>
                             <div class="col-4 text-right">
-                                <a asp-controller="Emails" asp-action="Create" asp-route-id="@Model.Profile.Id"
+                                <a asp-controller="Emails" asp-action="Create" asp-route-id="@Model.profileResponse.Result.Id"
                                    class="btn btn-primary">Create New</a>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <partial name="_EmailPartial" model="Model.Emails" />
+                        <partial name="_EmailPartial" model="Model.profileResponse.Result.ProfileEmails" />
                     </div>
                 </div>
             </div>
@@ -188,13 +188,13 @@
                                 <h3 class="mb-0">Vehiculos</h3>
                             </div>
                             <div class="col-4 text-right">
-                                <a asp-controller="vehicles" asp-action="Create" asp-route-id="@Model.Profile.Id"
+                                <a asp-controller="vehicles" asp-action="Create" asp-route-id="@Model.profileResponse.Result.Id"
                                    class="btn btn-primary">Create New</a>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <partial name="_VehiclePartial" model="Model.Vehicles" />
+                        <partial name="_VehiclePartial" model="Model.profileResponse.Result.ProfileVehicles" />
                     </div>
                 </div>
             </div>
@@ -206,13 +206,13 @@
                                 <h3 class="mb-0">Documentos de Identidad</h3>
                             </div>
                             <div class="col-4 text-right">
-                                <a asp-controller="ProfileDocTypes" asp-action="Create" asp-route-id="@Model.Profile.Id"
+                                <a asp-controller="ProfileDocTypes" asp-action="Create" asp-route-id="@Model.profileResponse.Result.Id"
                                    class="btn btn-primary">Create New</a>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <partial name="_DocPartial" model="Model.ProfileDocTypes" />
+                        <partial name="_DocPartial" model="Model.profileResponse.Result.ProfileDocTypes" />
                     </div>
                 </div>
             </div>

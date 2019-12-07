@@ -5,14 +5,8 @@ using System.Threading.Tasks;
 
 namespace RepublicaEmpleos.Models
 {
-    public class ProfileDocType
+    public class ProfileDocType:DTO.ProfileDocType
     {
-        public int DocTypeID { get; set; }
-        public DocType DocType { get; set; }
-
-        public int ProfileID { get; set; }
-        public Profile Profile { get; set; }
-
-        public string NumberDocument { get; set; }
+        public ICollection<DocType> DocTypes { get; set; }
     }
 }

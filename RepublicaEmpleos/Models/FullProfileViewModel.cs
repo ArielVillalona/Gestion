@@ -14,7 +14,7 @@ namespace RepublicaEmpleos.Models
             ProfileDocTypes = new List<ProfileDocType>();
             Vehicles = new List<Vehicle>();
         }
-        public Profile Profile { get; set; }
+        public Task<DTO.ProfileResponse> profileResponse { get; set; }
         public List<Phone> Phone { get; set; }
         public List<Email> Emails { get; set; }
         public Gender Gender { get; set; }

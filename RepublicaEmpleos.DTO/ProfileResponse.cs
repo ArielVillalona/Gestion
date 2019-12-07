@@ -10,6 +10,6 @@ namespace RepublicaEmpleos.DTO
         public virtual ICollection<Phone> Phones { get; set; } = new List<Phone>();
         public virtual ICollection<Email> ProfileEmails { get; set; } = new List<Email>();
         public virtual ICollection<Vehicle> ProfileVehicles { get; set; } = new List<Vehicle>();
-        public virtual ICollection<DocType> ProfileDocTypes { get; set; } = new List<DocType>();
+        public virtual ICollection<ProfileDocType> ProfileDocTypes { get; set; } = new List<ProfileDocType>();
     }
 }
