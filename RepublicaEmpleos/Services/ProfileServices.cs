@@ -29,6 +29,9 @@ namespace RepublicaEmpleos.Services
                                         .Include(s => s.ProfileAddresses)
                                             .ThenInclude(z => z.Address)
                                         .Include(x => x.Phones)
+                                        .Include(x=> x.ProfileVehicles)
+                                            .ThenInclude(y => y.VehicleType)
+                                        .Include(x => x.ProfileEmails)
                                         .Select(z => z.MapProfile())
                                         .SingleOrDefaultAsync(x=>x.ApplicationUserId==Id);
             return prof;

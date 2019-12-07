@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RepublicaEmpleos.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,32 @@ namespace RepublicaEmpleos.Infrastructure
             new DTO.ProfileResponse
             {
                 Id = profile.Id,
-                Phones = profile.Phones?.Select(x=> new DTO.Phone {Id = x.Id, Description = x.Description, ProfileId = x.ProfileId}).ToList(),
+                ProfileVehicles = profile.ProfileVehicles?
+                    .Select(x =>
+                    new DTO.Vehicle {
+                        Id = x.Id,
+                        ProfileId = x.ProfileId,
+                        Matricula = x.Matricula,
+                        VehicleTypeId=x.VehicleType.Id
+                    })
+                .ToList(),
+                ProfileEmails = profile.ProfileEmails?
+                    .Select(x =>
+                        new DTO.Email
+                        {
+                            Description = x.Description,
+                            Id = x.Id,
+                            ProfileId = x.ProfileId
+                        })
+                .ToList(),
+                Phones = profile.Phones?
+                    .Select(x=> 
+                        new DTO.Phone 
+                        {
+                            Id = x.Id, 
+                            Description = x.Description, 
+                            ProfileId = x.ProfileId
+                        }).ToList(),
                 Addresses = profile.ProfileAddresses?
                     .Select(PA =>
                         new DTO.Address
