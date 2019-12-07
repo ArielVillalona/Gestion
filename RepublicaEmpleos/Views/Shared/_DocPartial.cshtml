@@ -1,0 +1,35 @@
+﻿@model List<ProfileDocType>
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Documentos
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocType.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Profile.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberDocument)
+                    </td>
+                    <td>
+                        <a asp-controller="ProfileDocTypes" asp-action="Edit" asp-route-id="@item.ProfileID">Edit</a> |
+                        <a asp-controller="ProfileDocTypes" asp-action="Delete" asp-route-id="@item.ProfileID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

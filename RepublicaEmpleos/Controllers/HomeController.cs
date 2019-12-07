@@ -126,18 +126,24 @@ namespace RepublicaEmpleos.Controllers
             var fullprofile = _profileServices.GetProfileById(profile.Id);
             var phoness = new List<Phone>();
             var Emails = new List<Email>();
+            var vehicles = new List<Vehicle>();
+            var docs = new List<ProfileDocType>();
 
             if (fullprofile != null)
             {
                 phoness = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Id).ToList();
                 Emails = _dbContext.Emails.Where(x => x.ProfileId == fullprofile.Id).ToList();
+                vehicles = _dbContext.Vehicles.Include(x=> x.VehicleType).Where(x => x.ProfileId == fullprofile.Id).ToList();
+                docs = _dbContext.ProfileDocType.Include(x => x.DocType).Where(x => x.ProfileID == fullprofile.Id).ToList();
             }
             
             return View(new FullProfileViewModel
             {
                 Profile = fullprofile,
                 Phone = phoness,
-                Emails = Emails
+                Emails = Emails,
+                Vehicles = vehicles,
+                ProfileDocTypes = docs
         });
         }
         [ExportModelState]
