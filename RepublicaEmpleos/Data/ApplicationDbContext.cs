@@ -48,6 +48,7 @@ namespace RepublicaEmpleos.Data
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<DocType> DocTypes { get; set; }
         public DbSet<RepublicaEmpleos.Models.ProfileDocType> ProfileDocType { get; set; }
+        //public DbSet<RepublicaEmpleos.Models.ProfileAddress> ProfileAddress { get; set; }
         //public DbSet<RepublicaEmpleos.Models.ProfilePhone> ProfilePhone { get; set; }
     }
 }

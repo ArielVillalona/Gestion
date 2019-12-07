@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RepublicaEmpleos.Data;
+using RepublicaEmpleos.Infrastructure;
 using RepublicaEmpleos.Models.Identity;
 using RepublicaEmpleos.Services.Interfaces;
 using System;
@@ -22,9 +23,15 @@ namespace RepublicaEmpleos.Services
             _db.Profiles.Add(profile);
             await _db.SaveChangesAsync();
         }
-        public Profile GetProfileById(string Id)
+        public async Task<DTO.ProfileResponse> GetProfileById(string Id)
         {
-            return _db.Profiles.Where(x => x.ApplicationUserId == Id).FirstOrDefault();
+            var prof = await _db.Profiles.AsNoTracking()
+                                        .Include(s => s.ProfileAddresses)
+                                            .ThenInclude(z => z.Address)
+                                        .Include(x => x.Phones)
+                                        .Select(z => z.MapProfile())
+                                        .SingleOrDefaultAsync(x=>x.ApplicationUserId==Id);
+            return prof;
         }
         public Task<IEnumerable<Profile>> GetProfiles()
         {

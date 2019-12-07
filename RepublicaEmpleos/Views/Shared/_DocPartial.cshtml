@@ -7,9 +7,12 @@
         <thead>
             <tr>
                 <th>
-                    Documentos
+                    Tipo
                 </th>
-                <th></th>
+                <th>
+                    Numero
+                </th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -18,9 +21,6 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.DocType.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Profile.Id)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.NumberDocument)

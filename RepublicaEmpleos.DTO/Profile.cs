@@ -17,6 +17,7 @@ namespace RepublicaEmpleos.DTO
         public int? NationalityId { get; set; }
         public int? MatiralStatusId { get; set; }
         public int? EducativeTitleId { get; set; }
+        public string ApplicationUserId { get; set; }
 
     }
 }
