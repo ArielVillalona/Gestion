@@ -10,5 +10,6 @@ namespace RepublicaEmpleos.DTO
         public string Matricula { get; set; }
 
         public int ProfileId { get; set; }
+        public int VehicleTypeId { get; set; }
     }
 }

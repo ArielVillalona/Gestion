@@ -6,6 +6,6 @@ namespace RepublicaEmpleos
 {
     public class VehicleType:DTO.VehicleType
     {
-
+        public virtual  ICollection<Vehicle> Vehicles { get; set; }
     }
 }

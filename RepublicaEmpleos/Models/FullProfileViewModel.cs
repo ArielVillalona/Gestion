@@ -11,6 +11,8 @@ namespace RepublicaEmpleos.Models
         {
             Phone = new List<Phone>();
             Emails = new List<Email>();
+            ProfileDocTypes = new List<ProfileDocType>();
+            Vehicles = new List<Vehicle>();
         }
         public Profile Profile { get; set; }
         public List<Phone> Phone { get; set; }
@@ -19,5 +21,7 @@ namespace RepublicaEmpleos.Models
         public Nationality Nationality { get; set; }
         public MatiralStatus MatiralStatus { get; set; }
         public EducativeTitle EducativeTitle { get; set; }
+        public List<Vehicle> Vehicles { get; set; }
+        public List<ProfileDocType> ProfileDocTypes { get; set; }
     }
 }

@@ -14,8 +14,6 @@ namespace RepublicaEmpleos
         public Nationality Nationality { get; set; }
         public MatiralStatus MatiralStatus { get; set; }
         public EducativeTitle EducativeTitle { get; set; }
-        [ForeignKey("ApplicationUser")]
-        public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
 

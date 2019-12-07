@@ -85,7 +85,7 @@ namespace RepublicaEmpleos.Controllers
         }
 
         [HttpGet("/FullProfile")]
-        public async Task<IActionResult> FullProfile()
+        public async Task<ActionResult<List<DTO.ProfileResponse>>> FullProfile()
         {
             var genero = await _dbContext.Genders.ToListAsync();
             var Nacionalidad = await _dbContext.Nationalities.ToListAsync();
@@ -126,18 +126,39 @@ namespace RepublicaEmpleos.Controllers
             var fullprofile = _profileServices.GetProfileById(profile.Id);
             var phoness = new List<Phone>();
             var Emails = new List<Email>();
+            var vehicles = new List<Vehicle>();
+            var docs = new List<ProfileDocType>();
 
             if (fullprofile != null)
             {
-                phoness = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Id).ToList();
-                Emails = _dbContext.Emails.Where(x => x.ProfileId == fullprofile.Id).ToList();
+                //fullprofile.Result.Phones = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
+                phoness = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
+                Emails = _dbContext.Emails.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
+                vehicles = _dbContext.Vehicles.Include(x=> x.VehicleType).Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
+                docs = _dbContext.ProfileDocType.Include(x => x.DocType).Where(x => x.ProfileID == fullprofile.Result.Id).ToList();
             }
             
             return View(new FullProfileViewModel
             {
-                Profile = fullprofile,
+                Profile = new Profile()
+                {
+                    Id=fullprofile.Result.Id,
+                    ApplicationUserId = fullprofile.Result.ApplicationUserId,
+                    DateOfBirth = fullprofile.Result.DateOfBirth,
+                    EducativeTitleId = fullprofile.Result.EducativeTitleId,
+                    GenderId = fullprofile.Result.GenderId,
+                    HeadHome = fullprofile.Result.HeadHome,
+                    ImagePath = fullprofile.Result.ImagePath,
+                    MatiralStatusId = fullprofile.Result.MatiralStatusId,
+                    Name = fullprofile.Result.Name,
+                    LastName = fullprofile.Result.LastName,
+                    NationalityId = fullprofile.Result.NationalityId,
+                    Objetiv = fullprofile.Result.Objetiv
+                },
                 Phone = phoness,
-                Emails = Emails
+                Emails = Emails,
+                Vehicles = vehicles,
+                ProfileDocTypes = docs,
         });
         }
         [ExportModelState]
