@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using RepublicaEmpleos.Services.Interfaces;
 
 namespace RepublicaEmpleos.Controllers
 {
+    [Authorize]
     public class PhonesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -36,10 +38,10 @@ namespace RepublicaEmpleos.Controllers
         {
             if (ModelState.IsValid)
             {
+                phone.Id = 0;
                 await _phoneServices.CreateAsync(phone);
                 return RedirectToAction("fullprofile", "home");
             }
-            ViewData["ProfileId"] = new SelectList(_context.Profiles, "Id", "Id", phone.ProfileId);
             return View(phone);
         }
 

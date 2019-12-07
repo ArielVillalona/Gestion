@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepublicaEmpleos.Data;
 
 namespace RepublicaEmpleos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191207123921_docadncevivhle")]
+    partial class docadncevivhle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,8 +333,6 @@ namespace RepublicaEmpleos.Migrations
                     b.Property<int>("ProfileID");
 
                     b.Property<int>("DocTypeID");
-
-                    b.Property<string>("NumberDocument");
 
                     b.HasKey("ProfileID", "DocTypeID");
 

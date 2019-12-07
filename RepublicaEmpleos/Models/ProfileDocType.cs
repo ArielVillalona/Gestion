@@ -12,5 +12,7 @@ namespace RepublicaEmpleos.Models
 
         public int ProfileID { get; set; }
         public Profile Profile { get; set; }
+
+        public string NumberDocument { get; set; }
     }
 }

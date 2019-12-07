@@ -9,6 +9,6 @@ namespace RepublicaEmpleos
     {
         public VehicleType VehicleType { get; set; }
 
-        public virtual ICollection<ProfileVehicle> ProfileVehicles { get; set; }
+        public Profile Profile { get; set; }
     }
 }

@@ -8,5 +8,7 @@ namespace RepublicaEmpleos.DTO
     {
         public int Id { get; set; }
         public string Matricula { get; set; }
+
+        public int ProfileId { get; set; }
     }
 }

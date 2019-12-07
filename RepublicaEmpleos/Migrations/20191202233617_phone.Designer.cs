@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepublicaEmpleos.Data;
 
 namespace RepublicaEmpleos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191202233617_phone")]
+    partial class phone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,8 +205,7 @@ namespace RepublicaEmpleos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                    b.Property<string>("Description");
 
                     b.Property<int?>("ProfileId");
 
@@ -332,13 +333,24 @@ namespace RepublicaEmpleos.Migrations
 
                     b.Property<int>("DocTypeID");
 
-                    b.Property<string>("NumberDocument");
-
                     b.HasKey("ProfileID", "DocTypeID");
 
                     b.HasIndex("DocTypeID");
 
                     b.ToTable("ProfileDocType");
+                });
+
+            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
+                {
+                    b.Property<int>("ProfileID");
+
+                    b.Property<int>("VehicleId");
+
+                    b.HasKey("ProfileID", "VehicleId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("ProfileVehicle");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Nationality", b =>
@@ -458,13 +470,9 @@ namespace RepublicaEmpleos.Migrations
 
                     b.Property<string>("Matricula");
 
-                    b.Property<int>("ProfileId");
-
                     b.Property<int?>("VehicleTypeId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
 
                     b.HasIndex("VehicleTypeId");
 
@@ -576,6 +584,19 @@ namespace RepublicaEmpleos.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
+                {
+                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
+                        .WithMany("ProfileVehicles")
+                        .HasForeignKey("ProfileID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RepublicaEmpleos.Vehicle", "Vehicle")
+                        .WithMany("ProfileVehicles")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("RepublicaEmpleos.Neighborhood", b =>
                 {
                     b.HasOne("RepublicaEmpleos.Sector", "Sector")
@@ -622,11 +643,6 @@ namespace RepublicaEmpleos.Migrations
 
             modelBuilder.Entity("RepublicaEmpleos.Vehicle", b =>
                 {
-                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
-                        .WithMany("ProfileVehicles")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("RepublicaEmpleos.VehicleType", "VehicleType")
                         .WithMany()
                         .HasForeignKey("VehicleTypeId");

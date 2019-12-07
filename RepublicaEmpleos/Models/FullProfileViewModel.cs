@@ -10,9 +10,11 @@ namespace RepublicaEmpleos.Models
         public FullProfileViewModel()
         {
             Phone = new List<Phone>();
+            Emails = new List<Email>();
         }
         public Profile Profile { get; set; }
         public List<Phone> Phone { get; set; }
+        public List<Email> Emails { get; set; }
         public Gender Gender { get; set; }
         public Nationality Nationality { get; set; }
         public MatiralStatus MatiralStatus { get; set; }

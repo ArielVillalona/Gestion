@@ -7,7 +7,7 @@ namespace RepublicaEmpleos
 {
     public class Email:DTO.Email
     {
-        public virtual ICollection<ProfileEmail> ProfileEmails { get; set; }
-     
+        public Profile Profile { get; set; }
+
     }
 }

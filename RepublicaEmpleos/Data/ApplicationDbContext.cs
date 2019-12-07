@@ -20,13 +20,13 @@ namespace RepublicaEmpleos.Data
 
             modelBuilder.Entity<ProfileAddress>()
                 .HasKey(pa => new { pa.AddressID, pa.ProfileID });
-            modelBuilder.Entity<ProfileEmail>()
-                .HasKey(pe => new { pe.ProfileID, pe.EmailID });
+
+            modelBuilder.Entity<Email>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
             modelBuilder.Entity<Phone>()
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
-            modelBuilder.Entity<ProfileVehicle>()
-                .HasKey(pv => new { pv.ProfileID, pv.VehicleId });
             modelBuilder.Entity<ProfileDocType>()
                 .HasKey(pdt => new { pdt.ProfileID, pdt.DocTypeID});
         }
