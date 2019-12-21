@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepublicaEmpleos", "RepublicaEmpleos\RepublicaEmpleos.csproj", "{634F573F-41FF-495A-880D-519894A67908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepublicaEmpleos.DTO", "RepublicaEmpleos.DTO\RepublicaEmpleos.DTO.csproj", "{D0083B1F-A450-4B28-A034-A36ACF1CD4EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepublicaEmpleos.DTO", "RepublicaEmpleos.DTO\RepublicaEmpleos.DTO.csproj", "{D0083B1F-A450-4B28-A034-A36ACF1CD4EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepublicaEmpleos.WebApi", "RepublicaEmpleos.WebApi\RepublicaEmpleos.WebApi.csproj", "{262E060C-CB18-4E3D-BD89-C7BA6B816103}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D0083B1F-A450-4B28-A034-A36ACF1CD4EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0083B1F-A450-4B28-A034-A36ACF1CD4EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0083B1F-A450-4B28-A034-A36ACF1CD4EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{262E060C-CB18-4E3D-BD89-C7BA6B816103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{262E060C-CB18-4E3D-BD89-C7BA6B816103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{262E060C-CB18-4E3D-BD89-C7BA6B816103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{262E060C-CB18-4E3D-BD89-C7BA6B816103}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
