@@ -96,6 +96,7 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
 
 * **Ariel Villalona** - *Trabajo Inicial* - [arielvillalona](https://github.com/ArielVillalona)
+* **Cristopher Vivieca** - *Consultor* - [cvivieca](https://github.com/cvivieca)
 
 También puedes mirar la lista de todos los [contribuyentes](https://github.com/ArielVillalona/Gestion/graphs/contributors) quíenes han participado en este proyecto. 
 
