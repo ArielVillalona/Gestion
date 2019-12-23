@@ -24,15 +24,19 @@ Mira **Deployment** para conocer como desplegar el proyecto.
 
 ### Pre-requisitos 📋
 
-_Que cosas necesitas para instalar el software y como instalarlas_
+### Instale los siguientes software ###
 
-```
-Da un ejemplo
-```
+- [.NET SDK](https://www.microsoft.com/net/learn/get-started/)
+- [Visual Studio Code](https://code.visualstudio.com)
+- [Visual Studio Community](https://visualstudio.microsoft.com/es/vs/)
 
 ### Instalación 🔧
 
 _Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
+
+1. Abre la solucion
+2. Restaura los nuget packages
+3. Corre el proyecto
 
 _Dí cómo será ese paso_
 
