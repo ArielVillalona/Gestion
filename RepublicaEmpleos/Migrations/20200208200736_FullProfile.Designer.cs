@@ -10,8 +10,8 @@ using RepublicaEmpleos.Data;
 namespace RepublicaEmpleos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191129014052_test1")]
-    partial class test1
+    [Migration("20200208200736_FullProfile")]
+    partial class FullProfile
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -205,9 +205,14 @@ namespace RepublicaEmpleos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<int?>("ProfileId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Emails");
                 });
@@ -329,37 +334,13 @@ namespace RepublicaEmpleos.Migrations
 
                     b.Property<int>("DocTypeID");
 
+                    b.Property<string>("NumberDocument");
+
                     b.HasKey("ProfileID", "DocTypeID");
 
                     b.HasIndex("DocTypeID");
 
                     b.ToTable("ProfileDocType");
-                });
-
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileEmail", b =>
-                {
-                    b.Property<int>("ProfileID");
-
-                    b.Property<int>("EmailID");
-
-                    b.HasKey("ProfileID", "EmailID");
-
-                    b.HasIndex("EmailID");
-
-                    b.ToTable("ProfileEmail");
-                });
-
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
-                {
-                    b.Property<int>("ProfileID");
-
-                    b.Property<int>("VehicleId");
-
-                    b.HasKey("ProfileID", "VehicleId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("ProfileVehicle");
                 });
 
             modelBuilder.Entity("RepublicaEmpleos.Nationality", b =>
@@ -473,15 +454,17 @@ namespace RepublicaEmpleos.Migrations
 
             modelBuilder.Entity("RepublicaEmpleos.Vehicle", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
+
+                    b.Property<int>("ProfileId");
 
                     b.Property<string>("Matricula");
 
-                    b.Property<int?>("VehicleTypeId");
+                    b.Property<int>("VehicleTypeId");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "ProfileId");
+
+                    b.HasIndex("ProfileId");
 
                     b.HasIndex("VehicleTypeId");
 
@@ -560,6 +543,13 @@ namespace RepublicaEmpleos.Migrations
                         .HasForeignKey("CountryId");
                 });
 
+            modelBuilder.Entity("RepublicaEmpleos.Email", b =>
+                {
+                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
+                        .WithMany("ProfileEmails")
+                        .HasForeignKey("ProfileId");
+                });
+
             modelBuilder.Entity("RepublicaEmpleos.Models.ProfileAddress", b =>
                 {
                     b.HasOne("RepublicaEmpleos.Address", "Address")
@@ -583,32 +573,6 @@ namespace RepublicaEmpleos.Migrations
                     b.HasOne("RepublicaEmpleos.Profile", "Profile")
                         .WithMany("ProfileDocTypes")
                         .HasForeignKey("ProfileID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileEmail", b =>
-                {
-                    b.HasOne("RepublicaEmpleos.Email", "Email")
-                        .WithMany("ProfileEmails")
-                        .HasForeignKey("EmailID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
-                        .WithMany("ProfileEmails")
-                        .HasForeignKey("ProfileID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RepublicaEmpleos.Models.ProfileVehicle", b =>
-                {
-                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
-                        .WithMany("ProfileVehicles")
-                        .HasForeignKey("ProfileID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RepublicaEmpleos.Vehicle", "Vehicle")
-                        .WithMany("ProfileVehicles")
-                        .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -658,9 +622,15 @@ namespace RepublicaEmpleos.Migrations
 
             modelBuilder.Entity("RepublicaEmpleos.Vehicle", b =>
                 {
+                    b.HasOne("RepublicaEmpleos.Profile", "Profile")
+                        .WithMany("ProfileVehicles")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("RepublicaEmpleos.VehicleType", "VehicleType")
-                        .WithMany()
-                        .HasForeignKey("VehicleTypeId");
+                        .WithMany("Vehicles")
+                        .HasForeignKey("VehicleTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

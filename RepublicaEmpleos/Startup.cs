@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RepublicaEmpleos.Services.Interfaces;
 using RepublicaEmpleos.Services;
+using AutoMapper;
 
 namespace RepublicaEmpleos
 {
@@ -46,7 +47,7 @@ namespace RepublicaEmpleos
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
-
+            services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // The easiest option for development outside a container is to use SQLite
@@ -55,11 +56,6 @@ namespace RepublicaEmpleos
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 // Or use this for SQL Server (if running on Windows):
                 // options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection"))
-            });
-            
-            services.AddDbContext<ApplicationDbContextDeployd>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("Deployd"));
             });
 
             services.AddDefaultIdentity<ApplicationUser>()

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepublicaEmpleos.Migrations
 {
-    public partial class test1 : Migration
+    public partial class FullProfile : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -87,19 +87,6 @@ namespace RepublicaEmpleos.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EducativeTitles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Emails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Emails", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -293,10 +280,10 @@ namespace RepublicaEmpleos.Migrations
                     HeadHome = table.Column<bool>(nullable: false),
                     ImagePath = table.Column<string>(nullable: true),
                     GenderId = table.Column<int>(nullable: true),
-                    NationalityId = table.Column<int>(nullable: true),
                     MatiralStatusId = table.Column<int>(nullable: true),
                     EducativeTitleId = table.Column<int>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: true)
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    NationalityId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -334,26 +321,6 @@ namespace RepublicaEmpleos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vehicles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Matricula = table.Column<string>(nullable: true),
-                    VehicleTypeId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vehicles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Vehicles_VehicleTypes_VehicleTypeId",
-                        column: x => x.VehicleTypeId,
-                        principalTable: "VehicleTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sectors",
                 columns: table => new
                 {
@@ -369,6 +336,26 @@ namespace RepublicaEmpleos.Migrations
                         name: "FK_Sectors_Cities_CityID",
                         column: x => x.CityID,
                         principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Emails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: false),
+                    ProfileId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Emails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Emails_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -398,7 +385,8 @@ namespace RepublicaEmpleos.Migrations
                 columns: table => new
                 {
                     DocTypeID = table.Column<int>(nullable: false),
-                    ProfileID = table.Column<int>(nullable: false)
+                    ProfileID = table.Column<int>(nullable: false),
+                    NumberDocument = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -418,49 +406,27 @@ namespace RepublicaEmpleos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfileEmail",
+                name: "Vehicles",
                 columns: table => new
                 {
-                    ProfileID = table.Column<int>(nullable: false),
-                    EmailID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false),
+                    ProfileId = table.Column<int>(nullable: false),
+                    Matricula = table.Column<string>(nullable: true),
+                    VehicleTypeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfileEmail", x => new { x.ProfileID, x.EmailID });
+                    table.PrimaryKey("PK_Vehicles", x => new { x.Id, x.ProfileId });
                     table.ForeignKey(
-                        name: "FK_ProfileEmail_Emails_EmailID",
-                        column: x => x.EmailID,
-                        principalTable: "Emails",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProfileEmail_Profiles_ProfileID",
-                        column: x => x.ProfileID,
-                        principalTable: "Profiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProfileVehicle",
-                columns: table => new
-                {
-                    ProfileID = table.Column<int>(nullable: false),
-                    VehicleId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProfileVehicle", x => new { x.ProfileID, x.VehicleId });
-                    table.ForeignKey(
-                        name: "FK_ProfileVehicle_Profiles_ProfileID",
-                        column: x => x.ProfileID,
+                        name: "FK_Vehicles_Profiles_ProfileId",
+                        column: x => x.ProfileId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProfileVehicle_Vehicles_VehicleId",
-                        column: x => x.VehicleId,
-                        principalTable: "Vehicles",
+                        name: "FK_Vehicles_VehicleTypes_VehicleTypeId",
+                        column: x => x.VehicleTypeId,
+                        principalTable: "VehicleTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -582,6 +548,11 @@ namespace RepublicaEmpleos.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Emails_ProfileId",
+                table: "Emails",
+                column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Neighborhoods_SectorID",
                 table: "Neighborhoods",
                 column: "SectorID");
@@ -600,11 +571,6 @@ namespace RepublicaEmpleos.Migrations
                 name: "IX_ProfileDocType_DocTypeID",
                 table: "ProfileDocType",
                 column: "DocTypeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProfileEmail_EmailID",
-                table: "ProfileEmail",
-                column: "EmailID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Profiles_ApplicationUserId",
@@ -634,14 +600,14 @@ namespace RepublicaEmpleos.Migrations
                 column: "NationalityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileVehicle_VehicleId",
-                table: "ProfileVehicle",
-                column: "VehicleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Sectors_CityID",
                 table: "Sectors",
                 column: "CityID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_ProfileId",
+                table: "Vehicles",
+                column: "ProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicles_VehicleTypeId",
@@ -667,6 +633,9 @@ namespace RepublicaEmpleos.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Emails");
+
+            migrationBuilder.DropTable(
                 name: "Phones");
 
             migrationBuilder.DropTable(
@@ -676,10 +645,7 @@ namespace RepublicaEmpleos.Migrations
                 name: "ProfileDocType");
 
             migrationBuilder.DropTable(
-                name: "ProfileEmail");
-
-            migrationBuilder.DropTable(
-                name: "ProfileVehicle");
+                name: "Vehicles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -691,13 +657,10 @@ namespace RepublicaEmpleos.Migrations
                 name: "DocTypes");
 
             migrationBuilder.DropTable(
-                name: "Emails");
-
-            migrationBuilder.DropTable(
                 name: "Profiles");
 
             migrationBuilder.DropTable(
-                name: "Vehicles");
+                name: "VehicleTypes");
 
             migrationBuilder.DropTable(
                 name: "Neighborhoods");
@@ -716,9 +679,6 @@ namespace RepublicaEmpleos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Nationalities");
-
-            migrationBuilder.DropTable(
-                name: "VehicleTypes");
 
             migrationBuilder.DropTable(
                 name: "Sectors");

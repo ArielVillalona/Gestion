@@ -11,7 +11,6 @@ namespace RepublicaEmpleos.Areas.Admin.Controllers
     [Authorize]
     public class CasaController : Controller
     {
-        private readonly ApplicationDbContextDeployd _db;
         private readonly ILogger<CasaController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -20,12 +19,10 @@ namespace RepublicaEmpleos.Areas.Admin.Controllers
         public string StatusMessage { get; set; }
 
         public CasaController(
-            ApplicationDbContextDeployd db,
             ILogger<CasaController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
-            _db = db;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;

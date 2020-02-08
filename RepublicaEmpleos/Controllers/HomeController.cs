@@ -18,36 +18,38 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using RepublicaEmpleos.Services.Interfaces;
+using AutoMapper;
 
 namespace RepublicaEmpleos.Controllers
 {
     [AllowAnonymous]
     public class HomeController : BaseController
     {
-        private readonly ApplicationDbContextDeployd _db;
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _dbContext;
         private readonly IProfileServices _profileServices;
+        private readonly IMapper _mapper;
+        private FullProfileViewModel FPVM = new FullProfileViewModel();
 
         [TempData]
         public string StatusMessage { get; set; }
 
         public HomeController(
-            ApplicationDbContextDeployd db,
+            IMapper mapper,
             ApplicationDbContext dbContext,
             ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IProfileServices profileServices)
         {
-            _db = db;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
             _profileServices = profileServices;
+            _mapper = mapper;
         }
 
         [HttpGet("/")]
@@ -85,12 +87,8 @@ namespace RepublicaEmpleos.Controllers
         }
 
         [HttpGet("/FullProfile")]
-        public async Task<ActionResult<List<DTO.ProfileResponse>>> FullProfile()
+        public async Task<ActionResult<FullProfileViewModel>> FullProfile()
         {
-            var genero = await _dbContext.Genders.ToListAsync();
-            var Nacionalidad = await _dbContext.Nationalities.ToListAsync();
-            var EstadoCivil = await _dbContext.MatiralStatuses.ToListAsync();
-            var NivelEducativo = await _dbContext.EducativeTitles.ToListAsync();
             var Licencia = new List<SelectListItem> {
                 new SelectListItem() {Text = "No", Value = "1", Selected=true},
                 new SelectListItem() {Text = "Si", Value = "2"},
@@ -108,58 +106,25 @@ namespace RepublicaEmpleos.Controllers
                 new SelectListItem() {Text = "5' 8\"", Value = "2"},
                 new SelectListItem() {Text = "5' 9\"", Value = "3"}
             };
-            ViewData["Genero"] = new SelectList(genero.OrderBy(x => x.Description), "Id", "Description");
-            ViewData["Nacionalidad"] = new SelectList(Nacionalidad.OrderBy(x => x.Description), "Id", "Description");
-            ViewData["EstadoCivil"] = new SelectList(EstadoCivil.OrderBy(x => x.Description), "Id", "Description");
-            ViewData["NivelEducativo"] = new SelectList(NivelEducativo.OrderBy(x => x.Description), "Id", "Description");
+            ViewData["Genero"] = new SelectList(_dbContext.Genders.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
+            ViewData["Nacionalidad"] = new SelectList(_dbContext.Nationalities.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
+            ViewData["EstadoCivil"] = new SelectList(_dbContext.MatiralStatuses.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
+            ViewData["NivelEducativo"] = new SelectList(_dbContext.EducativeTitles.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             ViewData["Licencia"] = Licencia;
             ViewData["Vehiculo"] = Vehiculo;
             ViewData["CabezaHogar"] = CabezaHogar;
             ViewData["Estatura"] = Estatura;
-
             var profile = await _userManager.GetUserAsync(User);
             if (profile == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
-            var fullprofile = _profileServices.GetProfileById(profile.Id);
-            var phoness = new List<Phone>();
-            var Emails = new List<Email>();
-            var vehicles = new List<Vehicle>();
-            var docs = new List<ProfileDocType>();
-
-            if (fullprofile != null)
-            {
-                //fullprofile.Result.Phones = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                phoness = _dbContext.Phones.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                Emails = _dbContext.Emails.Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                vehicles = _dbContext.Vehicles.Include(x=> x.VehicleType).Where(x => x.ProfileId == fullprofile.Result.Id).ToList();
-                docs = _dbContext.ProfileDocType.Include(x => x.DocType).Where(x => x.ProfileID == fullprofile.Result.Id).ToList();
-            }
+            var Fpvm =await _profileServices.GetProfileById(profile.Id);
+            if (Fpvm == null)
+                return View(FPVM);
+            else
+                return View(Fpvm);
             
-            return View(new FullProfileViewModel
-            {
-                Profile = new Profile()
-                {
-                    Id=fullprofile.Result.Id,
-                    ApplicationUserId = fullprofile.Result.ApplicationUserId,
-                    DateOfBirth = fullprofile.Result.DateOfBirth,
-                    EducativeTitleId = fullprofile.Result.EducativeTitleId,
-                    GenderId = fullprofile.Result.GenderId,
-                    HeadHome = fullprofile.Result.HeadHome,
-                    ImagePath = fullprofile.Result.ImagePath,
-                    MatiralStatusId = fullprofile.Result.MatiralStatusId,
-                    Name = fullprofile.Result.Name,
-                    LastName = fullprofile.Result.LastName,
-                    NationalityId = fullprofile.Result.NationalityId,
-                    Objetiv = fullprofile.Result.Objetiv
-                },
-                Phone = phoness,
-                Emails = Emails,
-                Vehicles = vehicles,
-                ProfileDocTypes = docs,
-        });
         }
         [ExportModelState]
         [HttpPost("/FullProfile")]
@@ -168,14 +133,14 @@ namespace RepublicaEmpleos.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) { return NotFound(); }
 
-            if (input.Profile.ApplicationUserId == user.Id)
+            if (input.ApplicationUserId == user.Id)
             {
-                await _profileServices.UpdateProfileAsync(input.Profile);
+                await _profileServices.UpdateProfileAsync(input);
             }
             else
             {
-                input.Profile.ApplicationUserId = user.Id;
-                await _profileServices.CreateProfileAsync(input.Profile);
+                input.ApplicationUserId = user.Id;
+                await _profileServices.CreateProfileAsync(input);
             }
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(FullProfile));

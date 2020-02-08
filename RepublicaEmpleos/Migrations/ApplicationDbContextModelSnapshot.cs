@@ -452,17 +452,15 @@ namespace RepublicaEmpleos.Migrations
 
             modelBuilder.Entity("RepublicaEmpleos.Vehicle", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Matricula");
+                    b.Property<int>("Id");
 
                     b.Property<int>("ProfileId");
 
+                    b.Property<string>("Matricula");
+
                     b.Property<int>("VehicleTypeId");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "ProfileId");
 
                     b.HasIndex("ProfileId");
 

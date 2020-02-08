@@ -4,8 +4,10 @@ using System.Text;
 
 namespace RepublicaEmpleos
 {
-    public class Gender:DTO.Gender
+    public class Gender
     {
+        public int Id { get; set; }
+        public string Description { get; set; }
         public virtual ICollection<Profile> Profile { get; set; }
     }
 }
