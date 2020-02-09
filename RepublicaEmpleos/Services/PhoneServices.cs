@@ -41,13 +41,20 @@ namespace RepublicaEmpleos.Services
         {
             return await _db.Phones.FindAsync(id);
         }
+        public IQueryable<Phone> FindByPhoneAsync(string Number,int id)
+        {
+            return  _db.Phones.Where(o => o.Description.ToLower().Contains(Number) && o.ProfileId == id).AsQueryable();
+        }
+
         public IEnumerable<Phone> GetAllById(int Id)
         {
             return _db.Phones.Where(x => x.ProfileId == Id).ToList();
         }
-        bool IPhoneServices<Phone>.PhoneExists(int id)
+
+        public bool PhoneExists(int id)
         {
             return _db.Phones.Any(e => e.Id == id);
         }
+
     }
 }

@@ -10,6 +10,7 @@ namespace RepublicaEmpleos.Services.Interfaces
         IEnumerable<T> GetAllById(int Id);
         Task CreateAsync(T entity);
         Task<T> FindByIdAsync(int? id);
+        IQueryable<T> FindByPhoneAsync(string Number, int id);
         Task EditAsync(T entity);
         Task<T> Delete(int? Id);
         Task DeletedConfirmed(T Entity);
