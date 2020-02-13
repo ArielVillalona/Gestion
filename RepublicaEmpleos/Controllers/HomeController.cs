@@ -13,8 +13,6 @@ using Microsoft.Extensions.Logging;
 using RepublicaEmpleos.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using RepublicaEmpleos.Services.Interfaces;
@@ -54,18 +52,6 @@ namespace RepublicaEmpleos.Controllers
 
         [HttpGet("/")]
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet("/icons")]
-        public IActionResult Icons()
-        {
-            return View();
-        }
-
-        [HttpGet("/maps")]
-        public IActionResult Maps()
         {
             return View();
         }
@@ -131,6 +117,7 @@ namespace RepublicaEmpleos.Controllers
         public async Task<IActionResult> FullProfile([FromForm]FullProfileViewModel input)
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null) { return NotFound(); }
 
             if (input.ApplicationUserId == user.Id)
@@ -194,12 +181,6 @@ namespace RepublicaEmpleos.Controllers
             }
 
             return RedirectToAction(nameof(Profile));
-        }
-
-        [HttpGet("/tables")]
-        public IActionResult Tables()
-        {
-            return View();
         }
 
         [HttpGet("/Puestos")]

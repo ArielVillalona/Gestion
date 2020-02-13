@@ -1,5 +1,4 @@
 ﻿@model FullProfileViewModel
-
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 
@@ -163,7 +162,6 @@
                                                 <tr>
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">Numero</th>
-                                                    <th class="text-center">Sort</th>
                                                     <th class="text-center">Remove</th>
                                                 </tr>
                                             </thead>
@@ -173,20 +171,6 @@
                                                     <tr>
                                                         <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.Id)</td>
                                                         <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.Description)</td>
-                                                        <td class="pt-3-half">
-                                                            <span class="table-up">
-                                                                <a href="#!" class="indigo-text">
-                                                                    <i class="fas fa-long-arrow-alt-up"
-                                                                       aria-hidden="true"></i>
-                                                                </a>
-                                                            </span>
-                                                            <span class="table-down">
-                                                                <a href="#!" class="indigo-text">
-                                                                    <i class="fas fa-long-arrow-alt-down"
-                                                                       aria-hidden="true"></i>
-                                                                </a>
-                                                            </span>
-                                                        </td>
                                                         <td>
                                                             <span class="table-remove">
                                                                 <button type="button"
@@ -203,153 +187,132 @@
                                 </div>
                             </div>
                             <!-- Editable table -->
-
-                            <div class="col-xl-4 order-xl-6">
-                                <div class="card bg-secondar shadow">
-                                    <div class="card-header bg-white border-0">
-                                        <div class="row align-items-center">
-                                            <div class="col-8">
-                                                <h3 class="mb-0">Correos</h3>
-                                            </div>
-                                            <div class="col-4 text-right">
-                                                @*<a asp-controller="Emails" asp-action="Create" asp-route-id="@Model.Id"
-                                                    class="btn btn-primary">Create New</a>*@
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table">
+                            <!-- Editable table -->
+                            <div class="card">
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">CORREOS ELECTRONICOS</h3>
+                                <div class="card-body">
+                                    <div id="table" class="table-editable">
+                                        <span class="table-add float-right mb-3 mr-2">
+                                            <a href="#!" class="text-success">
+                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                        </span>
+                                        <table class="table table-bordered table-responsive-md table-striped text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>
-                                                        Correos Electronicos
-                                                    </th>
-                                                    <th></th>
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">Dominio</th>
+                                                    <th class="text-center">Remove</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if (Model.ProfileEmails != null)
+                                                @foreach (var item in Model.ProfileEmails)
                                                 {
-                                                    foreach (var item in Model.ProfileEmails)
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.Description)
-                                                            </td>
-                                                            <td>
-                                                                <a asp-controller="Phones" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                                                <a asp-controller="Phones" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                                            </td>
-                                                        </tr>
-                                                    }
+                                                    <tr>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.Id)</td>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.Description)</td>
+                                                        <td>
+                                                            <span class="table-remove">
+                                                                <button type="button"
+                                                                        class="btn btn-danger btn-rounded btn-sm my-0">
+                                                                    Remover
+                                                                </button>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
                                                 }
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Editable table -->
                         </div>
                         <div class="tab-pane fade" id="contact-classic-orange" role="tabpanel" aria-labelledby="contact-tab-classic-orange">
-                            <div class="col-xl-4 order-xl-6">
-                                <div class="card bg-secondar shadow">
-                                    <div class="card-header bg-white border-0">
-                                        <div class="row align-items-center">
-                                            <div class="col-8">
-                                                <h3 class="mb-0">Vehiculos</h3>
-                                            </div>
-                                            <div class="col-4 text-right">
-                                                @*<a asp-controller="vehicles" asp-action="Create" asp-route-id="@Model.Id"
-                                                    class="btn btn-primary">Create New</a>*@
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table">
+                            <!-- Editable table -->
+                            <div class="card">
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">VEHICULOS</h3>
+                                <div class="card-body">
+                                    <div id="table" class="table-editable">
+                                        <span class="table-add float-right mb-3 mr-2">
+                                            <a href="#!" class="text-success">
+                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                        </span>
+                                        <table class="table table-bordered table-responsive-md table-striped text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>
-                                                        Matricula
-                                                    </th>
-                                                    <th>
-                                                        Tipo
-                                                    </th>
-                                                    <th></th>
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">Tipo</th>
+                                                    <th class="text-center">Matricula</th>
+                                                    <th class="text-center">Remove</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if (Model.ProfileVehicles != null)
+                                                @foreach (var item in Model.ProfileVehicles)
                                                 {
-                                                    foreach (var item in Model.ProfileVehicles)
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.Matricula)
-                                                            </td>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.VehicleType.Description)
-                                                            </td>
-                                                            <td>
-                                                                <a asp-controller="vehicles" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                                                <a asp-controller="vehicles" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                                            </td>
-                                                        </tr>
-                                                    }
+                                                    <tr>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.Id)</td>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.VehicleType.Description)</td>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.Matricula)</td>
+                                                        <td>
+                                                            <span class="table-remove">
+                                                                <button type="button"
+                                                                        class="btn btn-danger btn-rounded btn-sm my-0">
+                                                                    Remover
+                                                                </button>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
                                                 }
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-4 order-xl-6">
-                                <div class="card bg-secondar shadow">
-                                    <div class="card-header bg-white border-0">
-                                        <div class="row align-items-center">
-                                            <div class="col-8">
-                                                <h3 class="mb-0">Documentos de Identidad</h3>
-                                            </div>
-                                            <div class="col-4 text-right">
-                                                @*<a asp-controller="ProfileDocTypes" asp-action="Create" asp-route-id="@Model.Id"
-                                                    class="btn btn-primary">Create New</a>*@
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table">
+                            <!-- Editable table -->
+                            <!-- Editable table -->
+                            <div class="card">
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">DOCUMENTOS DE IDENTIDAD</h3>
+                                <div class="card-body">
+                                    <div id="table" class="table-editable">
+                                        <span class="table-add float-right mb-3 mr-2">
+                                            <a href="#!" class="text-success">
+                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                        </span>
+                                        <table class="table table-bordered table-responsive-md table-striped text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>
-                                                        Tipo
-                                                    </th>
-                                                    <th>
-                                                        Numero
-                                                    </th>
-                                                    <th>Acciones</th>
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">TIPO</th>
+                                                    <th class="text-center">NUMERO</th>
+                                                    <th class="text-center">Remove</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if (Model.ProfileDocTypes != null)
+                                                @foreach (var item in Model.ProfileDocTypes)
                                                 {
-                                                    foreach (var item in Model.ProfileDocTypes)
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.DocType.Description)
-                                                            </td>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.NumberDocument)
-                                                            </td>
-                                                            <td>
-                                                                <a asp-controller="ProfileDocTypes" asp-action="Edit" asp-route-id="@item.ProfileID">Edit</a> |
-                                                                <a asp-controller="ProfileDocTypes" asp-action="Delete" asp-route-id="@item.ProfileID">Delete</a>
-                                                            </td>
-                                                        </tr>
-                                                    }
+                                                    <tr>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.DocTypeID)</td>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.DocType.Description)</td>
+                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem=> item.NumberDocument)</td>
+                                                        <td>
+                                                            <span class="table-remove">
+                                                                <button type="button"
+                                                                        class="btn btn-danger btn-rounded btn-sm my-0">
+                                                                    Remover
+                                                                </button>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
                                                 }
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Editable table -->
                         </div>
                         <div class="tab-pane fade" id="awesome-classic-orange" role="tabpanel" aria-labelledby="awesome-tab-classic-orange">
 
