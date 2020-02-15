@@ -48,8 +48,15 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
         {
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
-            [Display(Name = "Name")]
+            [Display(Name = "Nombre De Usuario")]
+            [RegularExpression(pattern: "/[^a-zA-Z0-9]/", ErrorMessage = "El {0} solo acepta Caracteres alphanumericos")]
             public string FullName { get; set; }
+            
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Numero de telefono")]
+            [RegularExpression(pattern: "/(809|849|829){1}(-){1}[0-9]{3}(-)[0-9]{4}/", ErrorMessage = "El formato es incorrecto")]
+            public string PhoneNumber { get; set; }
 
             [Required]
             [EmailAddress]
@@ -94,6 +101,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
                     EmailConfirmed = true,
                     // Custom fields next
                     FullName = Input.FullName,
+                    PhoneNumber = Input.PhoneNumber
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -101,7 +109,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // Uncomment the code below to enable sending a confirmation e-mail
-                    
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -111,21 +119,25 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                    
+
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    var fullprofile = new FullProfileViewModel
-                    {
-                        ApplicationUserId = user.Id,
-                        Name = user.FullName,
-                        ProfileEmails = new List<Email> {
-                            new Email
-                            {
-                                Description = user.Email
-                            }
-                        },
+                    FPVM.ApplicationUserId = user.Id;
+                    FPVM.Name = user.FullName;
+                    FPVM.ProfileEmails = new List<Email> {
+                        new Email
+                        {
+                            Description = user.Email
+                        }
                     };
-                    await _profileServices.CreateProfileAsync(fullprofile);
+                    FPVM.Phones = new List<Phone>
+                    {
+                        new Phone
+                        {
+                            Description = user.PhoneNumber
+                        }
+                    };
+                    await _profileServices.CreateProfileAsync(FPVM);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

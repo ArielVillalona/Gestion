@@ -7,6 +7,10 @@ namespace RepublicaEmpleos.Models.Identity
     public class ApplicationUser : IdentityUser
     {
         [PersonalData]
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [Display(Name = "Nombre De Usuario")]
+        [RegularExpression(pattern: "/[^a-zA-Z0-9]/",ErrorMessage ="El {0} solo acepta Caracteres alphanumericos")]
         public string FullName { get; set; }
 
         [PersonalData]

@@ -106,6 +106,7 @@ namespace RepublicaEmpleos.Controllers
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
             var Fpvm =await _profileServices.GetProfileById(profile.Id);
+            ViewData["ProfileId"] = profile.Id;
             if (Fpvm == null)
                 return View(FPVM);
             else

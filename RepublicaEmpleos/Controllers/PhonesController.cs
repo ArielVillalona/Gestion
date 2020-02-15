@@ -1,125 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using RepublicaEmpleos;
 using RepublicaEmpleos.Data;
 using RepublicaEmpleos.Services.Interfaces;
+using RepublicaEmpleos.Infrastructure;
 
 namespace RepublicaEmpleos.Controllers
 {
-    [Authorize]
-    public class PhonesController : Controller
+    [IgnoreAntiforgeryToken]
+    public class PhonesController : BaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly IPhoneServices<Phone> _phoneServices;
 
-        public PhonesController(ApplicationDbContext context, IPhoneServices<Phone> phoneServices)
+        public PhonesController(IPhoneServices<Phone> phoneServices)
         {
-            _context = context;
             _phoneServices = phoneServices;
         }
 
-        // GET: Phones/Create
-        public IActionResult Create(int id)
+        [HttpGet("id")]
+        [Route("/GetPhones/{id}")]
+        public async Task<IEnumerable<Phone>> GetPhones(int id)
         {
-            ViewData["ProfileId"] = id;
-            return View();
+            return await _phoneServices.GetAllById(id);
         }
 
         // POST: Phones/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,ProfileId")] Phone phone)
+        [Route("/AddPhones")]
+        public async Task<IActionResult> Create([FromBody] Phone phone)
         {
-            if (ModelState.IsValid)
-            {
-                phone.Id = 0;
-                await _phoneServices.CreateAsync(phone);
-                return RedirectToAction("fullprofile", "home");
-            }
-            return View(phone);
-        }
-
-        // GET: Phones/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var phone = await _phoneServices.FindByIdAsync(id);
-            if (phone == null)
-            {
-                return NotFound();
-            }
-            ViewData["ProfileId"] = phone.ProfileId;
-            return View(phone);
+            phone.Id = 0;
+            await _phoneServices.CreateAsync(phone);
+            return new ObjectResult(
+                $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
+                $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
+                $"<span aria-hidden=\"true\">&times;</span></button>"+
+                $"</div>");
         }
 
         // POST: Phones/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,ProfileId")] Phone phone)
+        [HttpPut("id")]
+        [Route("/Editphone/{id}")]
+        public async Task<IActionResult> Edit(int id,[FromBody]Phone phone)
         {
             if (id != phone.Id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _phoneServices.EditAsync(phone);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_phoneServices.PhoneExists(phone.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("fullprofile", "home");
+                await _phoneServices.EditAsync(phone);
             }
-            ViewData["ProfileId"] = new SelectList(_context.Profiles, "Id", "Id", phone.ProfileId);
-            return View(phone);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_phoneServices.PhoneExists(phone.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return new ObjectResult(
+                $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
+                $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
+                $"<span aria-hidden=\"true\">&times;</span></button>" +
+                $"</div>");
         }
 
-        // GET: Phones/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var phone = await _phoneServices.Delete(id);
-            if (phone == null)
-            {
-                return NotFound();
-            }
-
-            return View(phone);
-        }
-
-        // POST: Phones/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpDelete("id"), ActionName("Delete")]
+        [Route("/DelectPhone/{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             var phone = await _phoneServices.FindByIdAsync(id);
             await _phoneServices.DeletedConfirmed(phone);
-            return RedirectToAction("fullprofile","home");
+            return new ObjectResult(
+                $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
+                $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
+                $"<span aria-hidden=\"true\">&times;</span></button>" +
+                $"</div>");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace RepublicaEmpleos.Services.Interfaces
 {
     public interface IPhoneServices<T>
     {
-        IEnumerable<T> GetAllById(int Id);
+        Task<IEnumerable<T>> GetAllById(int Id);
         Task CreateAsync(T entity);
         Task<T> FindByIdAsync(int? id);
         IQueryable<T> FindByPhoneAsync(string Number, int id);

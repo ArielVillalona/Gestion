@@ -29,7 +29,7 @@ namespace RepublicaEmpleos.Controllers
                 return NotFound();
             }
 
-            var email = _emailServices.GetAllById(id);
+            var email = await _emailServices.GetAllByIdAsync(id);
             if (email == null)
             {
                 return NotFound();

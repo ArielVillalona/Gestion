@@ -7,7 +7,7 @@ namespace RepublicaEmpleos.Services.Interfaces
 {
     public interface IEmailServices<T>
     {
-        IEnumerable<T> GetAllById(int? Id);
+        Task<IEnumerable<T>> GetAllByIdAsync(int? Id);
         Task CreateAsync(T entity);
         Task<T> FindByIdAsync(int? id);
         Task EditAsync(T entity);

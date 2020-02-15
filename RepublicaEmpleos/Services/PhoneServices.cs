@@ -46,9 +46,9 @@ namespace RepublicaEmpleos.Services
             return  _db.Phones.Where(o => o.Description.ToLower().Contains(Number) && o.ProfileId == id).AsQueryable();
         }
 
-        public IEnumerable<Phone> GetAllById(int Id)
+        public async Task<IEnumerable<Phone>> GetAllById(int Id)
         {
-            return _db.Phones.Where(x => x.ProfileId == Id).ToList();
+            return await _db.Phones.Where(x => x.ProfileId == Id).ToListAsync();
         }
 
         public bool PhoneExists(int id)

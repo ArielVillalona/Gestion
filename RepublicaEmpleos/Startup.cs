@@ -12,7 +12,6 @@ using RepublicaEmpleos.Infrastructure.ApplicationUserClaims;
 using RepublicaEmpleos.Infrastructure.AppSettingsModels;
 using RepublicaEmpleos.Models.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
@@ -127,17 +126,14 @@ namespace RepublicaEmpleos
 
             services.AddMvc(options =>
             {
-                // Slugify routes so that we can use /employee/employee-details/1 instead of
-                // the default /Employee/EmployeeDetails/1
+                // Slugify routes so that we can use /Phone/Phone-details/1 instead of
+                // the default /Phone/PhoneDetails/1
                 //
                 // Using an outbound parameter transformer is a better choice as it also allows
                 // the creation of correct routes using view helpers
                 options.Conventions.Add(
                     new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
-
-                // Enable Antiforgery feature by default on all controller actions
-                // See more at https://docs.microsoft.com/en-us/aspnet/core/security/anti-request-forgery?view=aspnetcore-2.2
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).AddRazorPagesOptions(options =>
             {

@@ -44,9 +44,9 @@ namespace RepublicaEmpleos.Services
         {
             return await _db.Emails.FindAsync(id);
         }
-        public IEnumerable<Email> GetAllById(int? Id)
+        public async Task<IEnumerable<Email>> GetAllByIdAsync(int? Id)
         {
-            return _db.Emails.Where(x => x.ProfileId == Id).ToList();
+            return await _db.Emails.Where(x => x.ProfileId == Id).ToListAsync();
         }
 
     }
