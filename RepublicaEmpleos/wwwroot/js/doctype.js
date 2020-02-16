@@ -83,14 +83,14 @@ function onAddEmail(item) {
     options.data = JSON.stringify(obj);
     options.contentType = "application/json";
     options.dataType = "html";
-    options.success = function (msg1) {
-        console.log('msg1= ' + msg1);
-        document.getElementById("msg1").innerHTML = msg1;
+    options.success = function (msg) {
+        console.log('msg= ' + msg);
+        document.getElementById("msg").innerHTML = msg;
         getEmailList(ProfilesId);
         $("#descriptionEmail").val("");
     },
         options.error = function () {
-            $("#msg1").html("Error while calling the Web API!");
+            $("#msg").html("Error while calling the Web API!");
         };
     $.ajax(options);
 }
@@ -109,14 +109,14 @@ function EmailUpdate(item) {
     options.data = JSON.stringify(obj);
     options.contentType = "application/json";
     options.dataType = "html";
-    options.success = function (msg1) {
-        console.log('msg1= ' + msg1);
-        document.getElementById("msg1").innerHTML = msg1;
+    options.success = function (msg) {
+        console.log('msg= ' + msg);
+        document.getElementById("msg").innerHTML = msg;
         getEmailList(ProfilesId);
         
     };
     options.error = function () {
-        $("#msg1").html("Error while calling the Web API!");
+        $("#msg").html("Error while calling the Web API!");
     };
     $.ajax(options);
 }
@@ -127,26 +127,26 @@ function EmailDelete(item) {
     options.url = "/DelectEmail/" + id;
     options.type = "DELETE";
     options.dataType = "html";
-    options.success = function (msg1) {
-        console.log('msg1= ' + msg1);
-        document.getElementById("msg1").innerHTML = msg1;
+    options.success = function (msg) {
+        console.log('msg= ' + msg);
+        document.getElementById("msg").innerHTML = msg;
         getEmailList(ProfilesId);
         $("#descriptionEmail").val("");
     };
     options.error = function () {
-        $("#msg1").html("Error while calling the Web API!");
+        $("#msg").html("Error while calling the Web API!");
     };
     $.ajax(options);
 }
 
 // Handle exceptions from AJAX calls  
 function handleException(request, message, error) {
-    var msg1 = "";
-    msg1 += "Code: " + request.status + "\n";
-    msg1 += "Text: " + request.statusText + "\n";
+    var msg = "";
+    msg += "Code: " + request.status + "\n";
+    msg += "Text: " + request.statusText + "\n";
     if (request.responseJSON != null) {
-        msg1 += "Message" + request.responseJSON.Message + "\n";
+        msg += "Message" + request.responseJSON.Message + "\n";
     }
 
-    alert(msg1);
+    alert(msg);
 }  
