@@ -29,7 +29,7 @@ namespace RepublicaEmpleos.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly IProfileServices _profileServices;
         private readonly IMapper _mapper;
-        private FullProfileViewModel FPVM = new FullProfileViewModel();
+        private readonly FullProfileViewModel FPVM = new FullProfileViewModel();
 
         [TempData]
         public string StatusMessage { get; set; }

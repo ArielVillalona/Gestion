@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepublicaEmpleos", "RepublicaEmpleos\RepublicaEmpleos.csproj", "{634F573F-41FF-495A-880D-519894A67908}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepublicaEmpleos.DTO", "RepublicaEmpleos.DTO\RepublicaEmpleos.DTO.csproj", "{D0083B1F-A450-4B28-A034-A36ACF1CD4EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepublicaEmpleos.Models", "RepublicaEmpleos.DTO\RepublicaEmpleos.Models.csproj", "{D0083B1F-A450-4B28-A034-A36ACF1CD4EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepublicaEmpleos.WebApi", "RepublicaEmpleos.WebApi\RepublicaEmpleos.WebApi.csproj", "{262E060C-CB18-4E3D-BD89-C7BA6B816103}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepublicaEmpleos.Core", "RepublicaEmpleos.Core\RepublicaEmpleos.Core.csproj", "{4B65E981-B887-44BB-8DA5-56346ED6B736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepublicaEmpleos.Core", "RepublicaEmpleos.Core\RepublicaEmpleos.Core.csproj", "{4B65E981-B887-44BB-8DA5-56346ED6B736}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

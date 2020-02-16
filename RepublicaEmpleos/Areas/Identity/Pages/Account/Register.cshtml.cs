@@ -23,7 +23,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IProfileServices _profileServices;
-        private FullProfileViewModel FPVM = new FullProfileViewModel();
+        private readonly FullProfileViewModel FPVM = new FullProfileViewModel();
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -86,7 +86,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             if (!Input.AcceptPrivacyPolicy)
             {
                 ModelState.AddModelError(string.Empty, "You must accept the Privacy Policy in order to register");
@@ -114,7 +114,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { userId = user.Id, code = code },
+                        values: new { userId = user.Id, code },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",

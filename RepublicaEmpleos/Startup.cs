@@ -1,10 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RepublicaEmpleos.Data;
 using RepublicaEmpleos.Infrastructure;
@@ -19,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using RepublicaEmpleos.Services.Interfaces;
 using RepublicaEmpleos.Services;
 using AutoMapper;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace RepublicaEmpleos
 {
@@ -39,14 +39,16 @@ namespace RepublicaEmpleos
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
-
+            services.AddHealthChecks();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
+
             services.AddAutoMapper(typeof(Startup));
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // The easiest option for development outside a container is to use SQLite
@@ -56,15 +58,11 @@ namespace RepublicaEmpleos
                 // Or use this for SQL Server (if running on Windows):
                 // options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection"))
             });
-
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddRoles<IdentityRole>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-                //.AddEntityFrameworkStores<ApplicationDbContextDeployd>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
-            services.AddScoped<IProfileServices,ProfileServices>();
+            services.AddScoped<IProfileServices, ProfileServices>();
             services.AddScoped<IPhoneServices<Phone>, PhoneServices>();
             services.AddScoped<IEmailServices<Email>, EmailServices>();
 
@@ -123,7 +121,7 @@ namespace RepublicaEmpleos
             services.AddAntiforgery();
 
             services.Configure<ScriptTags>(Configuration.GetSection(nameof(ScriptTags)));
-
+            services.AddRazorPages();
             services.AddMvc(options =>
             {
                 // Slugify routes so that we can use /Phone/Phone-details/1 instead of
@@ -134,22 +132,22 @@ namespace RepublicaEmpleos
                 options.Conventions.Add(
                     new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).AddRazorPagesOptions(options =>
+                //options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            }).AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ContractResolver =
+                        new CamelCasePropertyNamesContractResolver())
+            .AddRazorPagesOptions(options =>
             {
                 // Perform the same slugify configuration for Razor pages
                 options.Conventions.Add(
                     new PageRouteTransformerConvention(
                         new SlugifyParameterTransformer()));
-
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Register", "/register");
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/login");
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Logout", "/logout");
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/ForgotPassword", "/forgot-password");
                 options.Conventions.AddAreaPageRoute("Admin", "/Casa/index", "/index");
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddSessionStateTempDataProvider();
-
+            }).AddSessionStateTempDataProvider();
             // You probably want to use in-memory cache if not developing using docker-compose
             // services.AddMemoryCache();
             //services.AddDistributedRedisCache(action => { action.Configuration = Configuration["Redis:InstanceName"]; });
@@ -169,7 +167,7 @@ namespace RepublicaEmpleos
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // This is required to make the application work behind a proxy like NGINX or HAPROXY
             // that also provides TLS termination (switching from incoming HTTPS to HTTP)
@@ -192,23 +190,16 @@ namespace RepublicaEmpleos
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseAuthentication();
-
             app.UseSession();
-
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoint =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=home}/{action=index}/{id?}");
-            });
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                  name: "Admin",
-                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                );
+                endpoint.MapRazorPages();
+                endpoint.MapHealthChecks("/health");
+                endpoint.MapControllerRoute("default", "{controller=home}/{action=index}/{id?}");
+                endpoint.MapControllerRoute("Admin", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
