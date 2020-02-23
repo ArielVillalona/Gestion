@@ -3,21 +3,25 @@
 
 var ProfilesId = $("#ProfileID").val();
 
-var Email = {
-    id: 0,
-    description: "",
-    ProfileId: 0,
+var ProfileDocType = {
+    docTypeID: 0,
+    profileID: 0,
+    docType: {
+        description: ""
+    },
+    numberDocument: ""
 }
 
-// Get all Email to display  
-function getEmailList(id) {
-    // Call Web API to get a list of Email  
+// Get all ProfileDocType to display  
+function getDocumentList(id) {
+    // Call Web API to get a list of Document  
     $.ajax({
-        url: 'GetEmails/'+id,
+        url: 'GetDocument/'+id,
         type: 'GET',
         dataType: 'json',
-        success: function (Email) {
-            EmailListSuccess(Email);
+        success: function (ProfileDocType) {
+            console.log(ProfileDocType);
+            DocumentListSuccess(ProfileDocType);
         },
         error: function (request, message, error) {
             handleException(request, message, error);
@@ -25,46 +29,46 @@ function getEmailList(id) {
     });
 }
 
-// Display all Emails returned from Web API call  
-function EmailListSuccess(Email) {
+// Display all Document returned from Web API call  
+function DocumentListSuccess(ProfileDocType) {
     // Iterate over the collection of data  
-    $("#EmailTable tbody").remove();
-    $.each(Email, function (index, Email) {
-        // Add a row to the Email table  
-        EmailAddRow(Email);
+    $("#DocumentTable tbody").remove();
+    $.each(ProfileDocType, function (index, ProfileDocType) {
+        // Add a row to the Document table  
+        DocumentAddRow(ProfileDocType);
     });
 }
 
-// Add Email row to <table>  
-function EmailAddRow(Email) {
+// Add Document row to <table>  
+function DocumentAddRow(ProfileDocType) {
     // First check if a <tbody> tag exists, add one if not  
-    if ($("#EmailTable tbody").length == 0) {
-        $("#EmailTable").append("<tbody></tbody>");
+    if ($("#DocumentTable tbody").length == 0) {
+        $("#DocumentTable").append("<tbody></tbody>");
     }
 
     // Append row to <table>  
-    $("#EmailTable tbody").append(
-        EmailBuildTableRow(Email));
+    $("#DocumentTable tbody").append(
+        DocumentBuildTableRow(ProfileDocType));
 }
 
 // Build a <tr> for a row of table data  
-function EmailBuildTableRow(Email) {
+function DocumentBuildTableRow(ProfileDocType) {
     var newRow = "<tr>" +
-        "<td>" + Email.id + "</td>" +
-        "<td> <div class='md-form form-lg'> <input class='input-description form-control form-control-lg' type='text' value='" + Email.description + "'/> </div> </td>"+
+        "<td>" + ProfileDocType.docType.description + "</td>" +
+        "<td> <div class='md-form form-lg'> <input class='input-description form-control form-control-lg' type='text' value='" + ProfileDocType.numberDocument + "'/> </div> </td>" +
         "<td>" +
         "<button type='button' " +
-        "onclick='EmailUpdate(this);' " +
+        "onclick='DocumentUpdate(this);' " +
         "class='btn btn-default' " +
-        "data-id='" + Email.id + "' " +
-        "data-description='" + Email.description + "' " +
+        "data-id='" + ProfileDocType.docTypeID + "' " +
+        "data-numberDocument='" + ProfileDocType.numberDocument + "' " +
         ">" +
         "<span class='glyphicon glyphicon-edit' /> Update" +
         "</button> " +
         " <button type='button' " +
-        "onclick='EmailDelete(this);'" +
+        "onclick='DocumentDelete(this);'" +
         "class='btn btn-default' " +
-        "data-id='" + Email.id + "'>" +
+        "data-id='" + ProfileDocType.docTypeID + "'>" +
         "<span class='glyphicon glyphicon-remove' />Delete" +
         "</button>" +
         "</td>" +
@@ -72,81 +76,81 @@ function EmailBuildTableRow(Email) {
     return newRow;
 }
 
-function onAddEmail(item) {
+function onAddDocument(item) {
     var options = {};
-    options.url = "AddEmails/";
+    options.url = "AddDocument/";
     options.type = "POST";
-    var obj = Email;
-    obj.description = $("#descriptionEmail").val();
+    var obj = ProfileDocType;
+    obj.numberDocument = $("#descriptionDocument").val();
+    obj.docTypeID = parseInt($("#DocID").val());
     obj.ProfileId = parseInt(ProfilesId);
+    obj.docType = null;
     console.dir(obj);
     options.data = JSON.stringify(obj);
     options.contentType = "application/json";
     options.dataType = "html";
-    options.success = function (msg) {
-        console.log('msg= ' + msg);
-        document.getElementById("msg").innerHTML = msg;
-        getEmailList(ProfilesId);
-        $("#descriptionEmail").val("");
+    options.success = function (msg3) {
+        console.log('msg3= ' + msg3);
+        document.getElementById("msg3").innerHTML = msg3;
+        getDocumentList(ProfilesId);
+        $("#descriptionDocument").val("");
     },
         options.error = function () {
-            $("#msg").html("Error while calling the Web API!");
+            $("#msg3").html("Error while calling the Web API!");
         };
     $.ajax(options);
 }
 
-function EmailUpdate(item) {
+function DocumentUpdate(item) {
     var id = $(item).data("id");
     var options = {};
-    options.url = "/EditEmail/" + id;
+    options.url = "EditDocument/" + id;
     options.type = "PUT";
 
-    var obj = Email;
-    obj.id = $(item).data("id");
-    obj.description = $(".input-description", $(item).parent().parent()).val();
-    obj.ProfileId = ProfilesId;
-    console.dir(obj);
+    var obj = ProfileDocType;
+    obj.docTypeID = $(item).data("id");
+    obj.numberDocument = $(".input-description", $(item).parent().parent()).val();
+    obj.profileID = ProfilesId;
+    obj.docType = null;
     options.data = JSON.stringify(obj);
     options.contentType = "application/json";
     options.dataType = "html";
-    options.success = function (msg) {
-        console.log('msg= ' + msg);
-        document.getElementById("msg").innerHTML = msg;
-        getEmailList(ProfilesId);
-        
+    options.success = function (msg3) {
+        document.getElementById("msg3").innerHTML = msg3;
+        getDocumentList(ProfilesId);
     };
     options.error = function () {
-        $("#msg").html("Error while calling the Web API!");
+        $("#msg3").html("Error while calling the Web API!");
     };
     $.ajax(options);
 }
 
-function EmailDelete(item) {
+function DocumentDelete(item) {
     var id = $(item).data("id");
     var options = {};
-    options.url = "/DelectEmail/" + id;
+    options.url = "/DeleteDocument/" + ProfilesId + "/" + id;
     options.type = "DELETE";
     options.dataType = "html";
-    options.success = function (msg) {
-        console.log('msg= ' + msg);
-        document.getElementById("msg").innerHTML = msg;
-        getEmailList(ProfilesId);
-        $("#descriptionEmail").val("");
+    options.success = function (msg3) {
+        console.log('msg3= ' + msg3);
+        document.getElementById("msg3").innerHTML = msg3;
+        getDocumentList(ProfilesId);
+        $("#descriptionDocument").val("");
     };
     options.error = function () {
-        $("#msg").html("Error while calling the Web API!");
+        $("#msg3").html("Error while calling the Web API!");
     };
     $.ajax(options);
 }
 
 // Handle exceptions from AJAX calls  
 function handleException(request, message, error) {
-    var msg = "";
-    msg += "Code: " + request.status + "\n";
-    msg += "Text: " + request.statusText + "\n";
+    var msg3 = "";
+    msg3 += "Code: " + request.status + "\n";
+    msg3 += "Text: " + request.statusText + "\n";
     if (request.responseJSON != null) {
-        msg += "Message" + request.responseJSON.Message + "\n";
+        msg3 += "Message" + request.responseJSON.Message + "\n";
     }
 
-    alert(msg);
+    alert(msg3);
 }  

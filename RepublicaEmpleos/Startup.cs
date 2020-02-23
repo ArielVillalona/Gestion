@@ -19,6 +19,8 @@ using RepublicaEmpleos.Services;
 using AutoMapper;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using RepublicaEmpleos.Core.Extensionsmethods;
+using RepublicaEmpleos.Models;
 
 namespace RepublicaEmpleos
 {
@@ -48,7 +50,7 @@ namespace RepublicaEmpleos
             });
 
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddCustomRazonPage();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // The easiest option for development outside a container is to use SQLite
@@ -65,6 +67,7 @@ namespace RepublicaEmpleos
             services.AddScoped<IProfileServices, ProfileServices>();
             services.AddScoped<IPhoneServices<Phone>, PhoneServices>();
             services.AddScoped<IEmailServices<Email>, EmailServices>();
+            services.AddScoped(typeof(IGenericInterface<ProfileDocType>), typeof(DocTypeServices));
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -133,9 +136,11 @@ namespace RepublicaEmpleos
                     new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
                 //options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ContractResolver =
-                        new CamelCasePropertyNamesContractResolver())
+            }).AddNewtonsoftJson(options => 
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            })
             .AddRazorPagesOptions(options =>
             {
                 // Perform the same slugify configuration for Razor pages

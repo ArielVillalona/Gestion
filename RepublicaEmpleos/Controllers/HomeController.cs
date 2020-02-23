@@ -96,6 +96,7 @@ namespace RepublicaEmpleos.Controllers
             ViewData["Nacionalidad"] = new SelectList(_dbContext.Nationalities.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             ViewData["EstadoCivil"] = new SelectList(_dbContext.MatiralStatuses.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             ViewData["NivelEducativo"] = new SelectList(_dbContext.EducativeTitles.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
+            ViewData["Doctype"] = new SelectList(_dbContext.DocTypes.ToListAsync().Result.OrderBy(x => x.Description), "ID", "Description");
             ViewData["Licencia"] = Licencia;
             ViewData["Vehiculo"] = Vehiculo;
             ViewData["CabezaHogar"] = CabezaHogar;

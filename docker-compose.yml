@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  republicaempleos:
+    image: ${DOCKER_REGISTRY-}republicaempleos
+    build:
+      context: .
+      dockerfile: RepublicaEmpleos/Dockerfile
+  republicaempleos.webapi:
+    image: ${DOCKER_REGISTRY-}republicaempleoswebapi
+    build:
+      context: .
+      dockerfile: RepublicaEmpleos.WebApi/Dockerfile
+

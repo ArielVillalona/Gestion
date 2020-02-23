@@ -11,6 +11,7 @@ namespace RepublicaEmpleos.Core.Extensionsmethods
         public static IServiceCollection AddCustomRazonPage(this IServiceCollection services)
         {
 
+
             return services;
         }
     }

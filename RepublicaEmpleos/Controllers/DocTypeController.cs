@@ -5,37 +5,39 @@ using Microsoft.EntityFrameworkCore;
 using RepublicaEmpleos.Data;
 using RepublicaEmpleos.Services.Interfaces;
 using RepublicaEmpleos.Infrastructure;
+using RepublicaEmpleos.Models;
+using System.Linq;
 
 namespace RepublicaEmpleos.Controllers
 {
     [IgnoreAntiforgeryToken]
     public class DocTypeController : BaseController
     {
-        private readonly IPhoneServices<Phone> _phoneServices;
+        private readonly IGenericInterface<ProfileDocType> _DoctypeServices;
 
-        public DocTypeController(IPhoneServices<Phone> phoneServices)
+
+        public DocTypeController(IGenericInterface<ProfileDocType> DoctypeServices)
         {
-            _phoneServices = phoneServices;
+            _DoctypeServices = DoctypeServices;
         }
 
         [HttpGet("id")]
-       // [Route("/GetPhones/{id}")]
-        public async Task<IEnumerable<Phone>> GetPhones(int id)
+       [Route("/GetDocument/{id}")]
+        public async Task<IEnumerable<ProfileDocType>> GetProfileDocType(int id)
         {
-            return await _phoneServices.GetAllById(id);
+            return await _DoctypeServices.GetAllById(id);
         }
 
         // POST: Phones/Create
         [HttpPost]
-       // [Route("/AddPhones")]
-        public async Task<IActionResult> Create([FromBody] Phone phone)
+        [Route("/AddDocument")]
+        public async Task<IActionResult> Create([FromBody] ProfileDocType profileDocType)
         {
-            phone.Id = 0;
-            await _phoneServices.CreateAsync(phone);
+            await _DoctypeServices.CreateAsync(profileDocType);
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>"+
                 $"</div>");
@@ -43,20 +45,20 @@ namespace RepublicaEmpleos.Controllers
 
         // POST: Phones/Edit/5
         [HttpPut("id")]
-       // [Route("/Editphone/{id}")]
-        public async Task<IActionResult> Edit(int id,[FromBody]Phone phone)
+       [Route("/EditDocument/{id}")]
+        public async Task<IActionResult> Edit(int id,[FromBody]ProfileDocType profileDocType)
         {
-            if (id != phone.Id)
+            if (id != profileDocType.DocTypeID)
             {
                 return NotFound();
             }
             try
             {
-                await _phoneServices.EditAsync(phone);
+                await _DoctypeServices.EditAsync(profileDocType);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_phoneServices.PhoneExists(phone.Id))
+                if (!_DoctypeServices.Exists(profileDocType.DocTypeID))
                 {
                     return NotFound();
                 }
@@ -68,22 +70,23 @@ namespace RepublicaEmpleos.Controllers
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>" +
                 $"</div>");
         }
 
         [HttpDelete("id"), ActionName("Delete")]
-      //  [Route("/DelectPhone/{id}")]
-        public async Task<IActionResult> Delete(int id)
+      [Route("/DeleteDocument/{id}/{doctype}")]
+        public async Task<IActionResult> Delete(int id,int doctype)
         {
-            var phone = await _phoneServices.FindByIdAsync(id);
-            await _phoneServices.DeletedConfirmed(phone);
+            var profileDocType = _DoctypeServices.GetAllById(id).Result;
+            var DelecteDoc = profileDocType.FirstOrDefault(x=> x.DocTypeID==doctype);
+            await _DoctypeServices.DeletedConfirmed(DelecteDoc);
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>" +
                 $"</div>");
