@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-xl-12 order-xl-1">
         <div class="card card-profile shadow ct-example">
-            <!--tabs -->
+            <!--TABS -->
             <div class="classic-tabs mx-2">
                 <ul class="nav tabs-orange" id="myClassicTabOrange" role="tablist">
                     <li class="nav-item">
@@ -44,7 +44,8 @@
                     }
                 </ul>
             </div>
-            <!--END tabs-->
+            <!--END TABS-->
+            <!--INFORMACIONES-->
             <div class="card-body pt-0 pt-md-4">
                 <div class="tab-content card" id="myClassicTabContentOrange">
                     <!--Informacion Basica-->
@@ -144,173 +145,167 @@
                         </form>
                     </div>
                     <!--END Informacion Basica-->
-                    @if (Model.Id > 0)
-                    {
-                        <!--Informacion de contacto-->
-                        <div class="tab-pane fade" id="follow-classic-orange" role="tabpanel" aria-labelledby="follow-tab-classic-orange">
-                            <!-- Telefono -->
-                            <br />
-                            <div id="msg">
-                            </div>
-                            <form>
-                                <div class="card">
-                                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">TELEFONOS</h3>
-                                    <div class="card-body">
-                                        <div id="table" class="table-editable">
-                                            <table id="PhoneTable" class="table table-bordered table-responsive-md table-striped text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">#</th>
-                                                        <th class="text-center">Numero</th>
-                                                        <th class="text-center">Acciones</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input id="description" type="text" /></td>
-                                                        <td>
-                                                            <span>
-                                                                <a id="insert" href="#!" class="text-success" onclick="onAddPhone(this)">
-                                                                    <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-                                                                </a>
-                                                                @*<input class="fas fa-plus fa-2x" type="button" id="insert" onclick='onAddPhone(this)' />*@
-                                                            </span>
-                                                        </td>
-
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <!--END Telefono -->
-                            <!-- Correo Electronicos -->
-                            <br />
-                            <div id="msg2">
-                            </div>
-                            <form>
-                                <div class="card">
-                                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">CORREO ELECTRONICO</h3>
-                                    <div class="card-body">
-                                        <div id="table2" class="table-editable">
-                                            <table id="EmailTable" class="table table-bordered table-responsive-md table-striped text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">#</th>
-                                                        <th class="text-center">Dominio</th>
-                                                        <th class="text-center">Acciones</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input id="descriptionEmail" type="text" /></td>
-                                                        <td>
-                                                            <span>
-                                                                <a id="insert" href="#!" class="text-success" onclick="onAddEmail(this)">
-                                                                    <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-                                                                </a>
-                                                                @*<input class="fas fa-plus fa-2x" type="button" id="insert" onclick='onAddPhone(this)' />*@
-                                                            </span>
-                                                        </td>
-
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <!-- END Correo Electronicos -->
+                    <!--Informacion de contacto-->
+                    <div class="tab-pane fade" id="follow-classic-orange" role="tabpanel" aria-labelledby="follow-tab-classic-orange">
+                        <!-- Telefono -->
+                        <br />
+                        <div id="msg">
                         </div>
-                        <!--END Informacion de contacto-->
-                        <div class="tab-pane fade" id="contact-classic-orange" role="tabpanel" aria-labelledby="contact-tab-classic-orange">
-                            <!-- Documentos de identidad -->
-                            <br />
-                            <div id="msg3">
-                            </div>
-                            <form>
-                                <div class="card">
-                                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">DOCUMENTOS DE IDENTIDAD</h3>
-                                    <div class="card-body">
-                                        <div id="table" class="table-editable">
-                                            <table id="DocumentTable" class="table table-bordered table-responsive-md table-striped text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">Tipo</th>
-                                                        <th class="text-center">Numero</th>
-                                                        <th class="text-center">Acciones</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <select class="form-control" id="DocID" asp-items="ViewBag.Doctype">
-                                                                <option value="">Seleccione</option>
-                                                            </select>
-                                                        </td>
-                                                        <td><input id="descriptionDocument" type="text" /></td>
-                                                        <td>
-                                                            <span>
-                                                                <a id="insert" href="#!" class="text-success" onclick="onAddDocument(this)">
-                                                                    <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-                                                                </a>
-                                                                @*<input class="fas fa-plus fa-2x" type="button" id="insert" onclick='onAddPhone(this)' />*@
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <!--END Documentos de indentidad -->
-                            <!-- Editable table -->
+                        <form>
                             <div class="card">
-                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">DOCUMENTOS DE IDENTIDAD</h3>
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">TELEFONOS</h3>
                                 <div class="card-body">
                                     <div id="table" class="table-editable">
-                                        <span class="table-add float-right mb-3 mr-2">
-                                            <a href="#!" class="text-success">
-                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-                                            </a>
-                                        </span>
-                                        <table class="table table-bordered table-responsive-md table-striped text-center">
+                                        <table id="PhoneTable" class="table table-bordered table-responsive-md table-striped text-center">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">#</th>
-                                                    <th class="text-center">TIPO</th>
-                                                    <th class="text-center">NUMERO</th>
-                                                    <th class="text-center">Remove</th>
+                                                    <th class="text-center">Numero</th>
+                                                    <th class="text-center">Acciones</th>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><input id="description" type="text" /></td>
+                                                    <td>
+                                                        <span>
+                                                            <a id="insert" href="#!" class="text-success" onclick="onAddPhone(this)">
+                                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                            @*<input class="fas fa-plus fa-2x" type="button" id="insert" onclick='onAddPhone(this)' />*@
+                                                        </span>
+                                                    </td>
+
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                @foreach (var item in Model.ProfileDocTypes)
-                                                {
-                                                    <tr>
-                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.DocTypeID)</td>
-                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.DocType.Description)</td>
-                                                        <td class="pt-3-half" contenteditable="true">@Html.DisplayFor(modelItem => item.NumberDocument)</td>
-                                                        <td>
-                                                            <span class="table-remove">
-                                                                <button type="button"
-                                                                        class="btn btn-danger btn-rounded btn-sm my-0">
-                                                                    Remover
-                                                                </button>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Editable table -->
+                        </form>
+                        <!--END Telefono -->
+                        <!-- Correo Electronicos -->
+                        <br />
+                        <div id="msg2">
                         </div>
-                        <div class="tab-pane fade" id="awesome-classic-orange" role="tabpanel" aria-labelledby="awesome-tab-classic-orange">
+                        <form>
+                            <div class="card">
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">CORREO ELECTRONICO</h3>
+                                <div class="card-body">
+                                    <div id="table2" class="table-editable">
+                                        <table id="EmailTable" class="table table-bordered table-responsive-md table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">Dominio</th>
+                                                    <th class="text-center">Acciones</th>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><input id="descriptionEmail" type="text" /></td>
+                                                    <td>
+                                                        <span>
+                                                            <a id="insert" href="#!" class="text-success" onclick="onAddEmail(this)">
+                                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                            @*<input class="fas fa-plus fa-2x" type="button" id="insert" onclick='onAddPhone(this)' />*@
+                                                        </span>
+                                                    </td>
 
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- END Correo Electronicos -->
+                    </div>
+                    <!--END Informacion de contacto-->
+                    <div class="tab-pane fade" id="contact-classic-orange" role="tabpanel" aria-labelledby="contact-tab-classic-orange">
+                        <!-- Documentos de identidad -->
+                        <br />
+                        <div id="msg3">
                         </div>
-                    }
+                        <form>
+                            <div class="card">
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">DOCUMENTOS DE IDENTIDAD</h3>
+                                <div class="card-body">
+                                    <div id="table" class="table-editable">
+                                        <table id="DocumentTable" class="table table-bordered table-responsive-md table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Tipo</th>
+                                                    <th class="text-center">Numero</th>
+                                                    <th class="text-center">Acciones</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <select class="form-control" id="DocID" asp-items="ViewBag.Doctype">
+                                                            <option value="">Seleccione</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input id="descriptionDocument" type="text" /></td>
+                                                    <td>
+                                                        <span>
+                                                            <a id="insert" href="#!" class="text-success" onclick="onAddDocument(this)">
+                                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                            @*<input class="fas fa-plus fa-2x" type="button" id="insert" onclick='onAddPhone(this)' />*@
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--END Documentos de indentidad -->
+                        <!-- VEHICULOS -->
+                        <br />
+                        <form>
+                            <div class="card">
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">VeHICULOS</h3>
+                                <div class="card-body">
+                                    <div id="table" class="table-editable">
+                                        <table id="VehicleTable" class="table table-bordered table-responsive-md table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Tipo</th>
+                                                    <th class="text-center">Matricula</th>
+                                                    <th class="text-center">Acciones</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <select class="form-control" id="VehicleID" asp-items="ViewBag.Vehicle">
+                                                            <option value="">Seleccione</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input id="descriptionVehicle" type="text" /></td>
+                                                    <td>
+                                                        <span>
+                                                            <a id="insert" href="#!" class="text-success" onclick="onAddVehicle(this)">
+                                                                <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--END VEHICULOS -->
+                    </div>
+                    <!--Pendiente-->
+                    <div class="tab-pane fade" id="awesome-classic-orange" role="tabpanel" aria-labelledby="awesome-tab-classic-orange">
+
+                    </div>
+                    <!--END Pendiente-->
                 </div>
             </div>
+            <!--END INFORMACIONES-->
         </div>
     </div>
 </div>

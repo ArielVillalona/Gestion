@@ -30,7 +30,6 @@ namespace RepublicaEmpleos
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -53,12 +52,8 @@ namespace RepublicaEmpleos
             services.AddCustomRazonPage();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                // The easiest option for development outside a container is to use SQLite
                 // options.UseSqlite(Configuration.GetConnectionString("SqliteConnection"));
-                // Or use this for PostgreSQL:
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                // Or use this for SQL Server (if running on Windows):
-                // options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection"))
             });
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -68,6 +63,7 @@ namespace RepublicaEmpleos
             services.AddScoped<IPhoneServices<Phone>, PhoneServices>();
             services.AddScoped<IEmailServices<Email>, EmailServices>();
             services.AddScoped(typeof(IGenericInterface<ProfileDocType>), typeof(DocTypeServices));
+            services.AddScoped(typeof(IGenericInterface<Vehicle>), typeof(VehicleServices));
 
             services.Configure<IdentityOptions>(options =>
             {

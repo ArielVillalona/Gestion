@@ -5,58 +5,55 @@ using Microsoft.EntityFrameworkCore;
 using RepublicaEmpleos.Data;
 using RepublicaEmpleos.Services.Interfaces;
 using RepublicaEmpleos.Infrastructure;
+using RepublicaEmpleos.Models;
+using System.Linq;
 
 namespace RepublicaEmpleos.Controllers
 {
     [IgnoreAntiforgeryToken]
     public class VehicleController : BaseController
     {
-        private readonly IPhoneServices<Phone> _phoneServices;
-
-        public VehicleController(IPhoneServices<Phone> phoneServices)
+        private readonly IGenericInterface<Vehicle> _VehicleServices;
+        public VehicleController(IGenericInterface<Vehicle> VehicleServices)
         {
-            _phoneServices = phoneServices;
+            _VehicleServices = VehicleServices;
         }
-
         [HttpGet("id")]
-      //  [Route("/GetPhones/{id}")]
-        public async Task<IEnumerable<Phone>> GetPhones(int id)
+        [Route("/GetVehicle/{id}")]
+        public async Task<IEnumerable<Vehicle>> GetVehicle(int id)
         {
-            return await _phoneServices.GetAllById(id);
+            return await _VehicleServices.GetAllById(id);
         }
-
         // POST: Phones/Create
         [HttpPost]
-      //  [Route("/AddPhones")]
-        public async Task<IActionResult> Create([FromBody] Phone phone)
+        [Route("/AddVehicle")]
+        public async Task<IActionResult> Create([FromBody] Vehicle vehicle)
         {
-            phone.Id = 0;
-            await _phoneServices.CreateAsync(phone);
+            await _VehicleServices.CreateAsync(vehicle);
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>"+
                 $"</div>");
         }
-
         // POST: Phones/Edit/5
         [HttpPut("id")]
-     //   [Route("/Editphone/{id}")]
-        public async Task<IActionResult> Edit(int id,[FromBody]Phone phone)
+        [Route("/EditVehicle/{id}")]
+        public async Task<IActionResult> Edit(int id,[FromBody]Vehicle vehicle)
         {
-            if (id != phone.Id)
+            if (id != vehicle.Id)
             {
                 return NotFound();
             }
             try
             {
-                await _phoneServices.EditAsync(phone);
+                await _VehicleServices.EditAsync(vehicle);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_phoneServices.PhoneExists(phone.Id))
+                if (!_VehicleServices.Exists(vehicle.Id))
                 {
                     return NotFound();
                 }
@@ -68,22 +65,22 @@ namespace RepublicaEmpleos.Controllers
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>" +
                 $"</div>");
         }
-
         [HttpDelete("id"), ActionName("Delete")]
-      //  [Route("/DelectPhone/{id}")]
+        [Route("/DeleteVehicle/{id}/{doctype}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var phone = await _phoneServices.FindByIdAsync(id);
-            await _phoneServices.DeletedConfirmed(phone);
+            var Vehicles = _VehicleServices.GetAllById(id).Result;
+            var DelecteVec = Vehicles.FirstOrDefault(x=> x.Id==id);
+            await _VehicleServices.DeletedConfirmed(DelecteVec);
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>" +
                 $"</div>");

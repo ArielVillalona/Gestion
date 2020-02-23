@@ -19,24 +19,13 @@ namespace RepublicaEmpleos
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
-                    webBuilder.UseIISIntegration();
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                    {
-                    })
-                    .UseStartup<Startup>();
-                }).Build();
+            var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var config = services.GetRequiredService<IConfiguration>();
                 try
                 {
-                    // Since we want to use scaffolding, we can't use an async Main method so we 
-                    // just wait for the task to finish in the old fashioned way
                     IdentityDataSeeder<ApplicationUser, IdentityRole>.SeedDataAsync(services).Wait();
                 }
                 catch (Exception ex)
@@ -49,6 +38,15 @@ namespace RepublicaEmpleos
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args);
+            Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+                webBuilder.UseIISIntegration();
+                webBuilder.ConfigureKestrel(serverOptions =>
+                {
+                })
+                .UseStartup<Startup>();
+            });
     }
 }

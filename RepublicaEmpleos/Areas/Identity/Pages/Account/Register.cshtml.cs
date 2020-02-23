@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using RepublicaEmpleos.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -21,7 +20,7 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        //private readonly IEmailSender _emailSender;
         private readonly IProfileServices _profileServices;
         private readonly FullProfileViewModel FPVM = new FullProfileViewModel();
 
@@ -29,13 +28,13 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+            //IEmailSender emailSender,
             IProfileServices profileServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+           // _emailSender = emailSender;
             _profileServices = profileServices;
         }
 
@@ -49,13 +48,13 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
             [Display(Name = "Nombre De Usuario")]
-            [RegularExpression(pattern: "/[^a-zA-Z0-9]/", ErrorMessage = "El {0} solo acepta Caracteres alphanumericos")]
+            //[RegularExpression(pattern: "/[^a-zA-Z0-9]/", ErrorMessage = "El {0} solo acepta Caracteres alphanumericos")]
             public string FullName { get; set; }
             
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
             [Display(Name = "Numero de telefono")]
-            [RegularExpression(pattern: "/(809|849|829){1}(-){1}[0-9]{3}(-)[0-9]{4}/", ErrorMessage = "El formato es incorrecto")]
+            //[RegularExpression(pattern: "/(809|849|829){1}(-){1}[0-9]{3}(-)[0-9]{4}/", ErrorMessage = "El formato es incorrecto")]
             public string PhoneNumber { get; set; }
 
             [Required]
@@ -110,15 +109,15 @@ namespace RepublicaEmpleos.Areas.Identity.Pages.Account
 
                     // Uncomment the code below to enable sending a confirmation e-mail
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code },
-                        protocol: Request.Scheme);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.Page(
+                    //    "/Account/ConfirmEmail",
+                    //    pageHandler: null,
+                    //    values: new { userId = user.Id, code },
+                    //    protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
 
                     await _signInManager.SignInAsync(user, isPersistent: false);

@@ -20,7 +20,6 @@ namespace RepublicaEmpleos.Data
 
             modelBuilder.Entity<ProfileAddress>()
                 .HasKey(pa => new { pa.AddressID, pa.ProfileID });
-
             modelBuilder.Entity<Email>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
@@ -29,8 +28,11 @@ namespace RepublicaEmpleos.Data
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<ProfileDocType>()
                 .HasKey(pdt => new { pdt.ProfileID, pdt.DocTypeID});
-            modelBuilder.Entity<Vehicle>()
-                .HasKey(pf => new { pf.Id, pf.ProfileId });
+            modelBuilder.Entity<Vehicle>(b =>
+            {
+                b.HasKey(pf => new { pf.Id, pf.ProfileId });
+                b.Property(e=>e.Id).ValueGeneratedOnAdd();
+            });
         }
 
         //public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
@@ -50,7 +52,5 @@ namespace RepublicaEmpleos.Data
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<DocType> DocTypes { get; set; }
         public DbSet<ProfileDocType> ProfileDocType { get; set; }
-        //public DbSet<RepublicaEmpleos.Models.ProfileAddress> ProfileAddress { get; set; }
-        //public DbSet<RepublicaEmpleos.Models.ProfilePhone> ProfilePhone { get; set; }
     }
 }
