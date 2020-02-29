@@ -4,54 +4,54 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RepublicaEmpleos.Services.Interfaces;
 using RepublicaEmpleos.Infrastructure;
-using System.Linq;
+using RepublicaEmpleos.Models;
 
 namespace RepublicaEmpleos.Controllers
 {
     [IgnoreAntiforgeryToken]
-    public class VehicleController : BaseController
+    public class LanguajeController : BaseController
     {
-        private readonly IGenericInterface<Vehicle> _VehicleServices;
-        public VehicleController(IGenericInterface<Vehicle> VehicleServices)
+        private readonly ILanguajeServices<ProfileLanguage> _ProfileLanguageServices;
+
+        public LanguajeController(ILanguajeServices<ProfileLanguage> ProfileLanguageServices)
         {
-            _VehicleServices = VehicleServices;
+            _ProfileLanguageServices= ProfileLanguageServices;
         }
+
         [HttpGet("id")]
-        [Route("/GetVehicle/{id}")]
-        public async Task<IEnumerable<Vehicle>> GetVehicle(int id)
+        [Route("/GetProfileLanguages/{ProfId}")]
+        public async Task<IEnumerable<ProfileLanguage>> GetProfileLanguages(int ProfId)
         {
-            return await _VehicleServices.GetAllById(id);
+            return await _ProfileLanguageServices.GetAllById(ProfId);
         }
-        // POST: Phones/Create
+
+        // POST: ProfileLanguages/Create
         [HttpPost]
-        [Route("/AddVehicle")]
-        public async Task<IActionResult> Create([FromBody] Vehicle vehicle)
+        [Route("/AddProfileLanguages")]
+        public async Task<IActionResult> Create([FromBody] ProfileLanguage ProfileLanguage)
         {
-            await _VehicleServices.CreateAsync(vehicle);
+            await _ProfileLanguageServices.CreateAsync(ProfileLanguage);
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>"+
                 $"</div>");
         }
-        // POST: Phones/Edit/5
+
+        // POST: ProfileLanguages/Edit/5
         [HttpPut("id")]
-        [Route("/EditVehicle/{id}")]
-        public async Task<IActionResult> Edit(int id,[FromBody]Vehicle vehicle)
+        [Route("/EditProfileLanguage/")]
+        public async Task<IActionResult> Edit([FromBody]ProfileLanguage ProfileLanguage)
         {
-            if (id != vehicle.Id)
-            {
-                return NotFound();
-            }
             try
             {
-                await _VehicleServices.EditAsync(vehicle);
+                await _ProfileLanguageServices.EditAsync(ProfileLanguage);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_VehicleServices.Exists(vehicle.Id))
+                if (!_ProfileLanguageServices.Exists(ProfileLanguage.LanguageId, ProfileLanguage.ProfileId))
                 {
                     return NotFound();
                 }
@@ -63,21 +63,22 @@ namespace RepublicaEmpleos.Controllers
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>" +
                 $"</div>");
         }
+
         [HttpDelete("id"), ActionName("Delete")]
-        [Route("/DeleteVehicle/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [Route("/DelectProfileLanguage/{ProfId}/{langId}")]
+        public async Task<IActionResult> Delete(int ProfId,int langId)
         {
-            var Vehicles = _VehicleServices.FindByIdAsync(id).Result;
-            await _VehicleServices.DeletedConfirmed(Vehicles);
+            var ProfileLanguage = await _ProfileLanguageServices.FindByIdAsync(ProfId, langId);
+            await _ProfileLanguageServices.DeletedConfirmed(ProfileLanguage);
             return new ObjectResult(
                 $"<div class=\"alert alert - default alert - dismissible fade show\" role=\"alert\">" +
                 $"<span class=\"alert - inner--icon\"><i class=\"ni ni - like - 2\"></i></span>" +
-                $"< span class=\"alert-inner--text\"><strong>Susses! Cargado Con Exito</strong></span>" +
+                $"< span class=\"alert-inner--text\"><strong>Susses! Telefono Cargado Con Exito</strong></span>" +
                 $"<button type = \"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
                 $"<span aria-hidden=\"true\">&times;</span></button>" +
                 $"</div>");

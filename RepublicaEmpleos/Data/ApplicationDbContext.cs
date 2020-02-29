@@ -33,6 +33,11 @@ namespace RepublicaEmpleos.Data
                 b.HasKey(pf => new { pf.Id, pf.ProfileId });
                 b.Property(e=>e.Id).ValueGeneratedOnAdd();
             });
+
+            modelBuilder.Entity<ProfileLanguage>(b =>
+            {
+                b.HasKey(PL => new { PL.LanguageId, PL.ProfileId });
+            });
         }
 
         //public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
@@ -52,5 +57,7 @@ namespace RepublicaEmpleos.Data
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<DocType> DocTypes { get; set; }
         public DbSet<ProfileDocType> ProfileDocType { get; set; }
+        public DbSet<Languaje> Languajes { get; set; }
+        public DbSet<ProfileLanguage> ProfileLanguages { get; set; }
     }
 }

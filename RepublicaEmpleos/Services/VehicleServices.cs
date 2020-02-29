@@ -29,6 +29,7 @@ namespace RepublicaEmpleos.Services
         }
         public async Task DeletedConfirmed(Vehicle Entity)
         {
+            Entity.VehicleType = null;
             _dbContext.Vehicles.Remove(Entity);
             await _dbContext.SaveChangesAsync();
         }

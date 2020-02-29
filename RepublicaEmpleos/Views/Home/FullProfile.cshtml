@@ -29,7 +29,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link waves-light" id="contact-tab-classic-orange" data-toggle="tab" href="#contact-classic-orange"
-                               role="tab" aria-controls="contact-classic-orange" aria-selected="false" onclick="getDocumentList(@Model.Id)">
+                               role="tab" aria-controls="contact-classic-orange" aria-selected="false" onclick="getDocumentList(@Model.Id), getVehicleList(@Model.Id)">
                                 <i class="fas fa-envelope fa-2x pb-2"
                                    aria-hidden="true"></i><br>Contact
                             </a>
@@ -265,7 +265,7 @@
                         <br />
                         <form>
                             <div class="card">
-                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">VeHICULOS</h3>
+                                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">VEHICULOS</h3>
                                 <div class="card-body">
                                     <div id="table" class="table-editable">
                                         <table id="VehicleTable" class="table table-bordered table-responsive-md table-striped text-center">

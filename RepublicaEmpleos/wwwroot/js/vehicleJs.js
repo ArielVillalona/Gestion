@@ -1,11 +1,12 @@
 ﻿var ProfilesId = $("#ProfileID").val();
 var vehicle = {
-    Id: 0,
-    ProfileId: 0,
-    VehicleType: {
-        Description: ""
+    id: 0,
+    profileId: 0,
+    vehicleType: {
+        description: ""
     },
-    Matricula: ""
+    vehicleTypeid: 0,
+    matricula: ""
 }
 // Get all vehicle to display  
 function getVehicleList(id) {
@@ -45,21 +46,21 @@ function VehicleAddRow(vehicle) {
 // Build a <tr> for a row of table data  
 function VehicleBuildTableRow(vehicle) {
     var newRow = "<tr>" +
-        "<td>" + vehicle.VehicleType.Description + "</td>" +
-        "<td> <div class='md-form form-lg'> <input class='input-Matricula form-control form-control-lg' type='text' value='" + vehicle.Matricula + "'/> </div> </td>" +
+        "<td>" + vehicle.vehicleType.description + "</td>" +
+        "<td> <div class='md-form form-lg'> <input class='input-Matricula form-control form-control-lg' type='text' value='" + vehicle.matricula + "'/></div> </td>" +
         "<td>" +
         "<button type='button' " +
         "onclick='VehicleUpdate(this);' " +
         "class='btn btn-default' " +
-        "data-id='" + vehicle.Id + "' " +
-        "data-Matricula='" + vehicle.Matricula + "' " +
+        "data-id='" + vehicle.id + "' " +
+        "data-Matricula='" + vehicle.matricula + "' " +
         ">" +
         "<span class='glyphicon glyphicon-edit' /> Update" +
         "</button> " +
         " <button type='button' " +
         "onclick='VehicleDelete(this);'" +
         "class='btn btn-default' " +
-        "data-id='" + vehicle.Id + "'>" +
+        "data-id='" + vehicle.id + "'>" +
         "<span class='glyphicon glyphicon-remove' />Delete" +
         "</button>" +
         "</td>" +
@@ -72,10 +73,10 @@ function onAddVehicle(item) {
     options.url = "AddVehicle/";
     options.type = "POST";
     var obj = vehicle;
-    obj.numberVehicle = $("#descriptionVehicle").val();
-    obj.docTypeID = parseInt($("#VehicleID").val());
+    obj.matricula = $("#descriptionVehicle").val();
     obj.ProfileId = parseInt(ProfilesId);
-    obj.docType = null;
+    obj.vehicleType = null;
+    obj.VehicleTypeId = parseInt($("#VehicleID").val());
     console.dir(obj);
     options.data = JSON.stringify(obj);
     options.contentType = "application/json";
@@ -99,10 +100,10 @@ function VehicleUpdate(item) {
     options.type = "PUT";
 
     var obj = vehicle;
-    obj.docTypeID = $(item).data("id");
-    obj.numberVehicle = $(".input-Matricula", $(item).parent().parent()).val();
+    obj.id = $(item).data("id");
+    obj.matricula = $(".input-Matricula", $(item).parent().parent()).val();
     obj.profileID = ProfilesId;
-    obj.docType = null;
+    obj.vehicleType = null;
     options.data = JSON.stringify(obj);
     options.contentType = "application/json";
     options.dataType = "html";
@@ -119,7 +120,7 @@ function VehicleUpdate(item) {
 function VehicleDelete(item) {
     var id = $(item).data("id");
     var options = {};
-    options.url = "/DeleteVehicle/" + ProfilesId + "/" + id;
+    options.url = "/DeleteVehicle/" + id;
     options.type = "DELETE";
     options.dataType = "html";
     options.success = function (msg3) {

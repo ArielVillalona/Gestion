@@ -62,6 +62,7 @@ namespace RepublicaEmpleos
             services.AddScoped<IProfileServices, ProfileServices>();
             services.AddScoped<IPhoneServices<Phone>, PhoneServices>();
             services.AddScoped<IEmailServices<Email>, EmailServices>();
+            services.AddScoped<ILanguajeServices<ProfileLanguage>, LanguageServices>();
             services.AddScoped(typeof(IGenericInterface<ProfileDocType>), typeof(DocTypeServices));
             services.AddScoped(typeof(IGenericInterface<Vehicle>), typeof(VehicleServices));
 

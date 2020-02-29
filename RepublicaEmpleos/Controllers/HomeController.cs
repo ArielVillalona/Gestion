@@ -75,32 +75,12 @@ namespace RepublicaEmpleos.Controllers
         [HttpGet("/FullProfile")]
         public async Task<ActionResult<FullProfileViewModel>> FullProfile()
         {
-            var Licencia = new List<SelectListItem> {
-                new SelectListItem() {Text = "No", Value = "1", Selected=true},
-                new SelectListItem() {Text = "Si", Value = "2"},
-            };
-            var Vehiculo = new List<SelectListItem> {
-                new SelectListItem() {Text = "No", Value = "1", Selected=true},
-                new SelectListItem() {Text = "Si", Value = "2"},
-            };
-            var CabezaHogar = new List<SelectListItem> {
-                new SelectListItem() {Text = "No", Value = "1", Selected=true},
-                new SelectListItem() {Text = "Si", Value = "2"},
-            };
-            var Estatura = new List<SelectListItem> {
-                new SelectListItem() {Text = "5' 7\"", Value = "1", Selected=true},
-                new SelectListItem() {Text = "5' 8\"", Value = "2"},
-                new SelectListItem() {Text = "5' 9\"", Value = "3"}
-            };
             ViewData["Genero"] = new SelectList(_dbContext.Genders.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             ViewData["Nacionalidad"] = new SelectList(_dbContext.Nationalities.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             ViewData["EstadoCivil"] = new SelectList(_dbContext.MatiralStatuses.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             ViewData["NivelEducativo"] = new SelectList(_dbContext.EducativeTitles.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             ViewData["Doctype"] = new SelectList(_dbContext.DocTypes.ToListAsync().Result.OrderBy(x => x.Description), "ID", "Description");
-            ViewData["Licencia"] = Licencia;
-            ViewData["Vehiculo"] = Vehiculo;
-            ViewData["CabezaHogar"] = CabezaHogar;
-            ViewData["Estatura"] = Estatura;
+            ViewData["Vehicle"] = new SelectList(_dbContext.VehicleTypes.ToListAsync().Result.OrderBy(x => x.Description), "Id", "Description");
             var profile = await _userManager.GetUserAsync(User);
             if (profile == null)
             {
